@@ -1,10 +1,49 @@
+* {
+	box-sizing: border-box;
+}
+	
 body {
     background-color: skyblue;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: yellowgreen;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+/* .heading-section {
+    display: flex;
+    flex-wrap: nowrap;
+} */
+
+nav {
+    display: inline;
+}
+
+form {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-link {
+    padding: 10px;
+}
+
 main {
+    margin: 100px auto;
+    width: 80vw;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .villager {
@@ -17,11 +56,15 @@ main {
 
 .villager-title {
     width: 300px;
+    display: flex;
+    align-items: center;
+    border: 1px solid purple;
 }
 
 .villager-icon {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
+    margin: 10px;
 }
 
 .villager-name {
@@ -31,11 +74,9 @@ main {
 .expanded-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-}
-
-.villager-details {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    border: 1px solid purple;
+    height: 250px;
 }
 
 .villager-img {
