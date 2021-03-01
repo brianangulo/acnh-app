@@ -88,8 +88,9 @@ function handleSubmit(evt) {
     $('main').html('');
     
     let userInput = $searchInput.val().toLowerCase();
-    
     let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
+
+    $('h2').text(`Search Results for ${query}`);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -112,6 +113,7 @@ function handleSubmit(evt) {
 };
 
 function handleSpeciesClick() {
+    $('h2').text('Browse by Species');
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let species = [];
@@ -149,6 +151,7 @@ function renderSpecies(input) {
 };
 
 function handleGenderClick() {
+    $('h2').text('Browse by Gender');
     let genders = ['Female', 'Male'];
     
     $('main').html('');
@@ -166,6 +169,7 @@ function renderGender(input) {
 }
 
 function handlePersonalityClick() {
+    $('h2').text('Browse by Personality');
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let personalities = [];
@@ -206,6 +210,8 @@ function showSpecies(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
 
+    $('h2').text(`All ${$target} Villagers`);
+
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let targetSpecies = data.filter(vill => vill.species === $target);
@@ -237,6 +243,8 @@ function showPersonalities(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
     
+    $('h2').text(`All ${$target} Villagers`);
+    
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let targetPersonality = data.filter(vill => vill.personality === $target);
@@ -267,6 +275,8 @@ function showPersonalities(evt) {
 function showGenders(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+
+    $('h2').text(`All ${$target} Villagers`);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {

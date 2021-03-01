@@ -33,8 +33,12 @@ form {
     padding: 10px;
 }
 
+h2 {
+    margin-top: 100px;
+}
+
 main {
-    margin: 100px auto;
+    margin: 0 auto;
     width: 80vw;
     display: flex;
     flex-wrap: wrap;
