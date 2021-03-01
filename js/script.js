@@ -1,6 +1,19 @@
 // call API to get all villager data
 const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
 .then(function(data) {
+    data.sort(function(a, b) {
+            let nameA = a.name['name-USen'].toUpperCase();
+            let nameB = b.name['name-USen'].toUpperCase();
+
+            if (nameA < nameB) {
+                return -1;
+            } else if (nameA > nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
     data.forEach(function(vill) {
         render(vill);
     })
