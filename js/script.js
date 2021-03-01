@@ -1,7 +1,9 @@
 // cached elements
 const $searchInput = $('#search-input');
 const $searchButton = $('#search-button');
-
+const $speciesLink = $('#species-link');
+const $genderLink = $('#gender-link');
+const $personalityLink = $('#personality-link');
 
 // call API to get all villager data
 const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
@@ -26,7 +28,16 @@ const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     console.log('Error ', err);
 });
 
-// render villager to page
+
+// event handlers
+$('main').on('click', '.villager-title', toggleDetails);
+$('form').on('submit', handleSubmit);
+// $speciesLink.on('click', );
+// $genderLink.on('click', );
+// $personalityLink.on('click', );
+
+
+// functions
 function render(villagerData) {
     let $newVillager = $(`<div class="villager">
     <div class='villager-title'>
@@ -48,19 +59,18 @@ function render(villagerData) {
     $('main').append($newVillager);
     $('main').find('.expanded-info').css('display', 'none');
     $('main').find('.expanded-info').addClass('hidden');
-}
+};
 
-// toggle view of villager card
-$('main').on('click', '.villager-title', function(evt) {
+function toggleDetails(evt) {
     let $target = $(evt.target);
     let $expandedInfo;
-
+    
     if ($target[0].nodeName === 'DIV') {
         $expandedInfo = $target.next();
     } else {
         $expandedInfo = $target.parent().next();
     };
-
+    
     if ($expandedInfo.hasClass('hidden')) {
         $expandedInfo.fadeIn();
         $expandedInfo.removeClass('hidden');
@@ -68,36 +78,33 @@ $('main').on('click', '.villager-title', function(evt) {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
     };
-});
-
-// search button function
-$('form').on('submit', handleSubmit);
+};
 
 function handleSubmit(evt) {
     evt.preventDefault();
-
+    
     $('main').html('');
     
     let userInput = $searchInput.val().toLowerCase();
-
+    
     let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let villIndex = data.findIndex(function(vill) {
-          return vill.name['name-USen'] === query; 
+            return vill.name['name-USen'] === query; 
         });
-
+        
         if (villIndex !== -1) {
             render(data[villIndex]);
-    
+            
             $('.expanded-info').show();
             $('.expanded-info').removeClass('.hidden');
         } else {
             $('main').html(`<p>Sorry, villager "${query}" not found. Check spelling and try again.</p>`);
         }
-
+        
     }, function(err) {
         console.log('Error ', err);
-});
+    });
 };
