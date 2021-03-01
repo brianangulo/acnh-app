@@ -1,3 +1,33 @@
 body {
     background-color: skyblue;
 }
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.villager {
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.villager-icon {
+    height: 20px;
+    width: 20px;
+}
+
+.villager-name {
+    display: inline;
+}
+
+.expanded-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.villager-details {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
