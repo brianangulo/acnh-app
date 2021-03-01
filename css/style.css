@@ -77,3 +77,17 @@ main {
     margin: 0;
     border: 1px solid purple;
 }
+
+.gender-name {
+    width: 150px;
+    padding: 16px 10px;
+    margin: 0;
+    border: 1px solid purple;
+}
+
+.personality-name {
+    width: 150px;
+    padding: 16px 10px;
+    margin: 0;
+    border: 1px solid purple;
+}

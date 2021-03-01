@@ -32,9 +32,9 @@ const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
 // event handlers
 $('main').on('click', '.villager-title', toggleDetails);
 $('form').on('submit', handleSubmit);
-$speciesLink.on('click', handleClick);
-// $genderLink.on('click', );
-// $personalityLink.on('click', );
+$speciesLink.on('click', handleSpeciesClick);
+$genderLink.on('click', handleGenderClick);
+$personalityLink.on('click', handlePersonalityClick);
 
 
 // functions
@@ -109,8 +109,7 @@ function handleSubmit(evt) {
     });
 };
 
-function handleClick() {
-
+function handleSpeciesClick() {
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let species = [];
@@ -137,12 +136,66 @@ function handleClick() {
     }, function(err) {
         console.log('Error ', err);
     });
+};
+
+function renderSpecies(input) {
+    let $newSpecies = $(`<div class="species">
+    <p class="species-name" id="${input.toLowerCase()}">${input}</p>
+    </div>`);
+    
+    $('main').append($newSpecies);
+};
+
+function handleGenderClick() {
+    let genders = ['Female', 'Male'];
+    
+    $('main').html('');
+    genders.forEach(function(gender) {
+        renderGender(gender);
+    });
 }
 
-function renderSpecies(animal) {
-    let $newSpecies = $(`<div class="species">
-        <p class="species-name" id="${animal.toLowerCase()}">${animal}</p>
+function renderGender(input) {
+    let $newGender = $(`<div class="gender">
+        <p class="gender-name" id="${input.toLowerCase()}">${input}</p>
+    </div>`);
+    
+    $('main').append($newGender);
+}
+
+function handlePersonalityClick() {
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let personalities = [];
+        data.forEach(function(vill) {
+            if (!personalities.includes(vill.personality)) {
+                personalities.push(vill.personality);
+            }
+        });
+
+        personalities.sort(function(a, b) {
+            if (a < b) {
+                return -1
+            } else if (a > b) {
+                return 1;
+            } else {
+                return;
+            }
+        })
+
+        $('main').html('');
+        personalities.forEach(function(animal) {
+            renderPersonality(animal);
+        })
+    }, function(err) {
+        console.log('Error ', err);
+    });
+};
+
+function renderPersonality(input) {
+    let $newPersonality = $(`<div class="personality">
+        <p class="personality-name" id="${input.toLowerCase()}">${input}</p>
     </div>`);
 
-    $('main').append($newSpecies);
-}
+    $('main').append($newPersonality);
+};
