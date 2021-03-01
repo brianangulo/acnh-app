@@ -35,7 +35,9 @@ $('form').on('submit', handleSubmit);
 $speciesLink.on('click', handleSpeciesClick);
 $genderLink.on('click', handleGenderClick);
 $personalityLink.on('click', handlePersonalityClick);
-
+$('main').on('click', '.species', showSpecies);
+$('main').on('click', '.gender', showGenders);
+$('main').on('click', '.personality', showPersonalities);
 
 // functions
 function render(villagerData) {
@@ -198,4 +200,97 @@ function renderPersonality(input) {
     </div>`);
 
     $('main').append($newPersonality);
+};
+
+function showSpecies(evt) {
+    let $target = $(evt.target).attr('id');
+    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let targetSpecies = data.filter(vill => vill.species === $target);
+
+        targetSpecies.sort(function(a, b) {
+            let nameA = a.name['name-USen'].toUpperCase();
+            let nameB = b.name['name-USen'].toUpperCase();
+
+            if (nameA < nameB) {
+                return -1;
+            } else if (nameA > nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        $('main').html('');
+        targetSpecies.forEach(function(vill) {
+            render(vill);
+        });
+
+    }, function(err) {
+        console.log('Error ', err);
+    });
+};
+
+function showPersonalities(evt) {
+    let $target = $(evt.target).attr('id');
+    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+    
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let targetPersonality = data.filter(vill => vill.personality === $target);
+
+        targetPersonality.sort(function(a, b) {
+            let nameA = a.name['name-USen'].toUpperCase();
+            let nameB = b.name['name-USen'].toUpperCase();
+
+            if (nameA < nameB) {
+                return -1;
+            } else if (nameA > nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+    
+        $('main').html('');
+        targetPersonality.forEach(function(vill) {
+            render(vill);
+        })
+    
+    }, function(err) {
+        console.log('Error ', err);
+    });
+};
+
+function showGenders(evt) {
+    let $target = $(evt.target).attr('id');
+    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+    
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let targetGender = data.filter(vill => vill.gender === $target);
+    
+        targetGender.sort(function(a, b) {
+            let nameA = a.name['name-USen'].toUpperCase();
+            let nameB = b.name['name-USen'].toUpperCase();
+    
+            if (nameA < nameB) {
+                return -1;
+            } else if (nameA > nameB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+    
+        $('main').html('');
+        targetGender.forEach(function(vill) {
+            render(vill);
+        })
+    
+    }, function(err) {
+        console.log('Error ', err);
+    });
 };
