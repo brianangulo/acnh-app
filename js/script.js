@@ -29,15 +29,26 @@ function render(villagerData) {
 
     $('main').append($newVillager);
     $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');
 }
 
 // toggle view of villager card
 $('main').on('click', '.villager-title', function(evt) {
     let $target = $(evt.target);
+    let $expandedInfo;
 
     if ($target[0].nodeName === 'DIV') {
-        $target.next().toggle();
+        $expandedInfo = $target.next();
     } else {
-        $target.parent().next().toggle();
+        $expandedInfo = $target.parent().next();
+    }
+
+
+    if ($expandedInfo.hasClass('hidden')) {
+        $expandedInfo.fadeIn();
+        $expandedInfo.removeClass('hidden');
+    } else {
+        $expandedInfo.fadeOut();
+        $expandedInfo.addClass('hidden');
     }
 });
