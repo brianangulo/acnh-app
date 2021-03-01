@@ -1,3 +1,8 @@
+// cached elements
+const $searchInput = $('#search-input');
+const $searchButton = $('#search-button');
+
+
 // call API to get all villager data
 const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
 .then(function(data) {
@@ -54,8 +59,7 @@ $('main').on('click', '.villager-title', function(evt) {
         $expandedInfo = $target.next();
     } else {
         $expandedInfo = $target.parent().next();
-    }
-
+    };
 
     if ($expandedInfo.hasClass('hidden')) {
         $expandedInfo.fadeIn();
@@ -63,5 +67,37 @@ $('main').on('click', '.villager-title', function(evt) {
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
-    }
+    };
 });
+
+// search button function
+$('form').on('submit', handleSubmit);
+
+function handleSubmit(evt) {
+    evt.preventDefault();
+
+    $('main').html('');
+    
+    let userInput = $searchInput.val().toLowerCase();
+
+    let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
+    
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let villIndex = data.findIndex(function(vill) {
+          return vill.name['name-USen'] === query; 
+        });
+
+        if (villIndex !== -1) {
+            render(data[villIndex]);
+    
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        } else {
+            $('main').html(`<p>Sorry, villager "${query}" not found. Check spelling and try again.</p>`);
+        }
+
+    }, function(err) {
+        console.log('Error ', err);
+});
+};
