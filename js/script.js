@@ -1,6 +1,6 @@
+// call API to get all villager data
 const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
 .then(function(data) {
-    console.log(data);
     data.forEach(function(vill) {
         render(vill);
     })
@@ -8,18 +8,8 @@ const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     console.log('Error ', err);
 });
 
+// render villager to page
 function render(villagerData) {
-    // console.log(villagerData['icon_uri']);
-    // console.log(villagerData.name['name-USen']);
-    // console.log(villagerData.species);
-    // console.log(villagerData.gender);
-    // console.log(villagerData['birthday-string']);
-    // console.log(villagerData.personality);
-    // console.log(villagerData['catch-phrase']);
-    // console.log(villagerData['image_uri']);
-    // console.log();
-
-    
     let $newVillager = $(`<div class="villager">
     <div class='villager-title'>
         <img class="villager-icon" src="${villagerData['icon_uri']}">
@@ -38,4 +28,16 @@ function render(villagerData) {
 </div>`);
 
     $('main').append($newVillager);
+    $('main').find('.expanded-info').css('display', 'none');
 }
+
+// toggle view of villager card
+$('main').on('click', '.villager-title', function(evt) {
+    let $target = $(evt.target);
+
+    if ($target[0].nodeName === 'DIV') {
+        $target.next().toggle();
+    } else {
+        $target.parent().next().toggle();
+    }
+});
