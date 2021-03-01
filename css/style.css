@@ -41,14 +41,6 @@ main {
     justify-content: center;
 }
 
-.villager {
-    display: inline-flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    flex-grow: 1;
-    max-width: 300px;
-}
-
 .villager-title {
     width: 300px;
     display: flex;
@@ -77,4 +69,11 @@ main {
 .villager-img {
     height: 100px;
     width: 100px;
+}
+
+.species-name {
+    width: 150px;
+    padding: 16px 10px;
+    margin: 0;
+    border: 1px solid purple;
 }

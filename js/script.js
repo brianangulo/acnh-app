@@ -32,7 +32,7 @@ const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
 // event handlers
 $('main').on('click', '.villager-title', toggleDetails);
 $('form').on('submit', handleSubmit);
-// $speciesLink.on('click', );
+$speciesLink.on('click', handleClick);
 // $genderLink.on('click', );
 // $personalityLink.on('click', );
 
@@ -108,3 +108,41 @@ function handleSubmit(evt) {
         console.log('Error ', err);
     });
 };
+
+function handleClick() {
+
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        let species = [];
+        data.forEach(function(vill) {
+            if (!species.includes(vill.species)) {
+                species.push(vill.species);
+            }
+        });
+
+        species.sort(function(a, b) {
+            if (a < b) {
+                return -1
+            } else if (a > b) {
+                return 1;
+            } else {
+                return;
+            }
+        })
+
+        $('main').html('');
+        species.forEach(function(animal) {
+            renderSpecies(animal);
+        })
+    }, function(err) {
+        console.log('Error ', err);
+    });
+}
+
+function renderSpecies(animal) {
+    let $newSpecies = $(`<div class="species">
+        <p class="species-name" id="${animal.toLowerCase()}">${animal}</p>
+    </div>`);
+
+    $('main').append($newSpecies);
+}
