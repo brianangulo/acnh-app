@@ -43,6 +43,7 @@ header {
     width: 60%;
     background-color: #e4f2e8;
     padding: 10px;
+    overflow: hidden;
 }
 
 .navbar {
@@ -62,8 +63,13 @@ header {
     display: flex;
 }
 
+.subnav-content a:hover {
+    background-color: #eee;
+    color: black;
+  }
+
 .nav-link {
-    padding: 10px;
+    padding: 12px;
 }
 
 form {
@@ -81,6 +87,10 @@ form {
 
 #search-button {
     border: none;
+}
+
+h1 {
+    margin-top: 120px;
 }
 
 h2 {

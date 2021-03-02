@@ -1,14 +1,28 @@
 // cached elements
 const $searchInput = $('#search-input');
 const $searchButton = $('#search-button');
+const $allVillagersLink = $('#all-villagers');
 const $speciesLink = $('#species-link');
 const $genderLink = $('#gender-link');
 const $personalityLink = $('#personality-link');
 
-// call API to get all villager data
-const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
-.then(function(data) {
-    data.sort(function(a, b) {
+
+// event handlers
+$allVillagersLink.on('click', allVillagers);
+$('main').on('click', '.villager-title', toggleDetails);
+$('form').on('submit', handleSubmit);
+$speciesLink.on('click', handleSpeciesClick);
+$genderLink.on('click', handleGenderClick);
+$personalityLink.on('click', handlePersonalityClick);
+$('main').on('click', '.species', showSpecies);
+$('main').on('click', '.gender', showGenders);
+$('main').on('click', '.personality', showPersonalities);
+
+// functions
+function allVillagers() {
+    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
+    .then(function(data) {
+        data.sort(function(a, b) {
             let nameA = a.name['name-USen'].toUpperCase();
             let nameB = b.name['name-USen'].toUpperCase();
 
@@ -21,25 +35,21 @@ const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
             }
         });
 
-    data.forEach(function(vill) {
-        render(vill);
-    })
-}, function(err) {
-    console.log('Error ', err);
-});
+        if ($('body').find('h2').length) {
+            $('h2').text('All Villagers');
+        } else {
+            $(`<h2>All Villagers</h2>`).insertBefore('main');
+        };
+        
+        $('main').html('');
+        data.forEach(function(vill) {
+            render(vill);
+        })
+    }, function(err) {
+        console.log('Error ', err);
+    });
+};
 
-
-// event handlers
-$('main').on('click', '.villager-title', toggleDetails);
-$('form').on('submit', handleSubmit);
-$speciesLink.on('click', handleSpeciesClick);
-$genderLink.on('click', handleGenderClick);
-$personalityLink.on('click', handlePersonalityClick);
-$('main').on('click', '.species', showSpecies);
-$('main').on('click', '.gender', showGenders);
-$('main').on('click', '.personality', showPersonalities);
-
-// functions
 function render(villagerData) {
     let $newVillager = $(`<div class="villager">
     <div class='villager-title'>
@@ -108,7 +118,12 @@ function handleSubmit(evt) {
     query = query.charAt(0).toUpperCase() + query.slice(1);
     
     $searchInput.val('');
-    $('h2').text(`Search Results for "${userInput}"`);
+
+    if ($('body').find('h2').length) {
+        $('h2').text(`Search Results for "${userInput}"`);
+    } else {
+        $(`<h2>Search Results for "${userInput}"</h2>`).insertBefore('main');
+    };
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -133,7 +148,12 @@ function handleSubmit(evt) {
 };
 
 function handleSpeciesClick() {
-    $('h2').text('Browse by Species');
+    if ($('body').find('h2').length) {
+        $('h2').text('Browse by Species');
+    } else {
+        $(`<h2>Browse by Species</h2>`).insertBefore('main');
+    };
+
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let species = [];
@@ -171,7 +191,12 @@ function renderSpecies(input) {
 };
 
 function handleGenderClick() {
-    $('h2').text('Browse by Gender');
+    if ($('body').find('h2').length) {
+        $('h2').text('Browse by Gender');
+    } else {
+        $(`<h2>Browse by Gender</h2>`).insertBefore('main');
+    };
+    
     let genders = ['Female', 'Male'];
     
     $('main').html('');
@@ -189,7 +214,12 @@ function renderGender(input) {
 }
 
 function handlePersonalityClick() {
-    $('h2').text('Browse by Personality');
+    if ($('body').find('h2').length) {
+        $('h2').text('Browse by Personality');
+    } else {
+        $(`<h2>Browse by Personality</h2>`).insertBefore('main');
+    };
+
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let personalities = [];
@@ -230,7 +260,11 @@ function showSpecies(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
 
-    $('h2').text(`All ${$target} Villagers`);
+    if ($('body').find('h2').length) {
+        $('h2').text(`All ${$target} Villagers`);
+    } else {
+        $(`<h2>All ${$target} Villagers</h2>`).insertBefore('main');
+    };
 
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -263,7 +297,11 @@ function showPersonalities(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
     
-    $('h2').text(`All ${$target} Villagers`);
+    if ($('body').find('h2').length) {
+        $('h2').text(`All ${$target} Villagers`);
+    } else {
+        $(`<h2>All ${$target} Villagers</h2>`).insertBefore('main');
+    };
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -296,7 +334,11 @@ function showGenders(evt) {
     let $target = $(evt.target).attr('id');
     $target = $target.charAt(0).toUpperCase() + $target.slice(1);
 
-    $('h2').text(`All ${$target} Villagers`);
+    if ($('body').find('h2').length) {
+        $('h2').text(`All ${$target} Villagers`);
+    } else {
+        $(`<h2>All ${$target} Villagers</h2>`).insertBefore('main');
+    };
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
