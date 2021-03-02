@@ -91,8 +91,10 @@ function toggleDetails(evt) {
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
-        $villagerTitle.css('border-bottom', '1px solid #6dbdb6');
-        $villagerTitle.css('margin-bottom', '2px');
+        setTimeout(function() {
+            $villagerTitle.css('border-bottom', '1px solid #6dbdb6');
+            $villagerTitle.css('margin-bottom', '8px');
+        }, 400);
     };
 };
 
@@ -162,7 +164,7 @@ function handleSpeciesClick() {
 
 function renderSpecies(input) {
     let $newSpecies = $(`<div class="species">
-    <p class="species-name" id="${input.toLowerCase()}">${input}</p>
+    <p class="sort-label-name" id="${input.toLowerCase()}">${input}</p>
     </div>`);
     
     $('main').append($newSpecies);
@@ -180,7 +182,7 @@ function handleGenderClick() {
 
 function renderGender(input) {
     let $newGender = $(`<div class="gender">
-        <p class="gender-name" id="${input.toLowerCase()}">${input}</p>
+        <p class="sort-label-name" id="${input.toLowerCase()}">${input}</p>
     </div>`);
     
     $('main').append($newGender);
@@ -218,7 +220,7 @@ function handlePersonalityClick() {
 
 function renderPersonality(input) {
     let $newPersonality = $(`<div class="personality">
-        <p class="personality-name" id="${input.toLowerCase()}">${input}</p>
+        <p class="sort-label-name" id="${input.toLowerCase()}">${input}</p>
     </div>`);
 
     $('main').append($newPersonality);

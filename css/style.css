@@ -1,12 +1,23 @@
 * {
 	box-sizing: border-box;
 }
+
+html {
+    height: 100%;
+}
 	
 body {
     background-image: url("../img/pattern-leaves-white.jpg");
     background-repeat: repeat;
     background-color: #e4f2e8;
     font-family: Helvetica, sans-serif;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#body-container {
+    flex: 1 0 auto;
 }
 
 header {
@@ -59,6 +70,7 @@ h2 {
 }
 
 main {
+    flex: 1;
     margin: 0 auto;
     width: 80vw;
     display: flex;
@@ -71,7 +83,8 @@ main {
     display: flex;
     align-items: center;
     border: 1px solid #6dbdb6;
-    margin: 2px;
+    margin: 8px;
+    background-color: rgba(107, 190, 182, 0.1);
 }
 
 .villager-icon {
@@ -91,8 +104,9 @@ main {
     height: 200px;
     border: 1px solid #6dbdb6;
     border-top: none;
-    margin: 2px;
+    margin: 8px;
     margin-top: 0;
+    background-color: rgba(107, 190, 182, 0.1);
 }
 
 .villager-details {
@@ -119,23 +133,21 @@ main {
     width: 100px;
 }
 
-.species-name {
+.sort-label-name {
     width: 150px;
     padding: 16px 10px;
-    margin: 2px;
+    margin: 5px;
     border: 1px solid #6dbdb6;
+    background-color: rgba(107, 190, 182, 0.1);
 }
 
-.gender-name {
-    width: 150px;
-    padding: 16px 10px;
-    margin: 2px;
-    border: 1px solid #6dbdb6;
-}
-
-.personality-name {
-    width: 150px;
-    padding: 16px 10px;
-    margin: 2px;
-    border: 1px solid #6dbdb6;
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    padding: 20px;
+    margin-top: 50px;
+    background-image: url("../img/pattern-leaves-turquoise.jpg");
+    background-color: #6dbdb6;
 }
