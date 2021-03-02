@@ -16,16 +16,43 @@
         <header>
             <img id="logo" src="./img/acnh-logo.png" alt="Animal Crossing: New Horizons">
             <div class='heading-section'>
-                <nav>
-                    <a href="./index.html" class="nav-link">All</a>
-                    <a href="#" class="nav-link" id='species-link'>Species</a>
-                    <a href="#" class="nav-link" id='gender-link'>Gender</a>
-                    <a href="#" class="nav-link" id='personality-link'>Personality</a>
-                </nav>
+
+                <div class="navbar">
+                    <a href="./index.html">Home</a>
+
+                    <div class="subnav">
+                        <a href="#" class="nav-link">Villagers <i class="fa fa-caret-down"></i></a>
+                        <div class="subnav-content">
+                            <a href="#" class="nav-link" id='all-villagers'>All</a>
+                            <a href="#" class="nav-link" id='species-link'>Species</a>
+                            <a href="#" class="nav-link" id='gender-link'>Gender</a>
+                            <a href="#" class="nav-link" id='personality-link'>Personality</a>
+                        </div>
+                    </div>
+
+                    <div class="subnav">
+                        <a href="#" class="nav-link" id='species-link'>Critters <i class="fa fa-caret-down"></i></a>
+                        <div class="subnav-content">
+                            <a href="#" class="nav-link">Bugs</a>
+                            <a href="#" class="nav-link" id='species-link'>Fish</a>
+                            <a href="#" class="nav-link" id='gender-link'>Sea</a>
+                        </div>
+                    </div>
+
+                    <div class="subnav">
+                        <a href="#" class="nav-link" id='gender-link'>Museum <i class="fa fa-caret-down"></i></a>
+                        <div class="subnav-content">
+                            <a href="#" class="nav-link">Art</a>
+                            <a href="#" class="nav-link" id='species-link'>Fossils</a>
+                        </div>
+                    </div>
+                </div>
+
                 <form>
                     <input type="text" id="search-input" placeholder="search villager name...">
                     <button id='search-button'><i class="fas fa-search"></i></button>
                 </form>
+
             </div>
         </header>
     

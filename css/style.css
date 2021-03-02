@@ -38,8 +38,32 @@ header {
 
 .heading-section {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: flex-end;
+    width: 60%;
+    background-color: #e4f2e8;
+    padding: 10px;
+}
+
+.navbar {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.subnav-content {
+    display: none;
+    position: absolute;
+    background-color: #e4f2e8;
+}
+
+.subnav:hover .subnav-content {
+    display: flex;
+}
+
+.nav-link {
+    padding: 10px;
 }
 
 form {
@@ -57,10 +81,6 @@ form {
 
 #search-button {
     border: none;
-}
-
-.nav-link {
-    padding: 10px;
 }
 
 h2 {
