@@ -104,6 +104,7 @@ function handleSubmit(evt) {
     let userInput = $searchInput.val().toLowerCase();
     let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
     
+    $searchInput.val('');
     $('h2').text(`Search Results for ${query}`);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')

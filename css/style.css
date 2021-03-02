@@ -4,6 +4,7 @@
 	
 body {
     background-color: skyblue;
+    font-family: Helvetica, sans-serif;
 }
 
 header {
@@ -17,16 +18,25 @@ header {
 }
 
 h1 {
-    font-size: 24px;
+
 }
 
-nav {
-    display: inline;
+.heading-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 form {
-    display: inline;
+    display: flex;
     margin-right: 20px;
+    margin-left: 10px;
+    border: 1px solid orchid;
+}
+
+#search-input {
+    border: none;
+    flex-grow: 1;
 }
 
 .nav-link {
@@ -35,6 +45,7 @@ form {
 
 h2 {
     margin-top: 100px;
+    margin-left: 40px;
 }
 
 main {
@@ -46,7 +57,7 @@ main {
 }
 
 .villager-title {
-    width: 250px;
+    width: 300px;
     display: flex;
     align-items: center;
     border: 1px solid purple;
@@ -70,7 +81,6 @@ main {
     height: 200px;
     border: 1px solid purple;
     border-top: none;
-    background-color: yellowgreen;
     margin: 2px;
     margin-top: 0;
 }
@@ -82,11 +92,12 @@ main {
 .detail-label {
     text-transform: uppercase;
     font-size: 10px;
+    font-weight: bold;
     margin: 0;
 }
 
 .detail {
-    margin: 0 0 8px 8px;
+    margin: 0 0 8px 15px;
 }
 
 .villager-img {
