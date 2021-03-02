@@ -91,7 +91,7 @@ function toggleDetails(evt) {
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
-        $villagerTitle.css('border-bottom', '1px solid purple');
+        $villagerTitle.css('border-bottom', '1px solid #6dbdb6');
         $villagerTitle.css('margin-bottom', '2px');
     };
 };
@@ -101,11 +101,12 @@ function handleSubmit(evt) {
     
     $('main').html('');
     
-    let userInput = $searchInput.val().toLowerCase();
-    let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
+    let userInput = $searchInput.val()
+    let query = $searchInput.val().toLowerCase();
+    query = query.charAt(0).toUpperCase() + query.slice(1);
     
     $searchInput.val('');
-    $('h2').text(`Search Results for ${query}`);
+    $('h2').text(`Search Results for "${userInput}"`);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -121,7 +122,7 @@ function handleSubmit(evt) {
             $('.expanded-info').show();
             $('.expanded-info').removeClass('.hidden');
         } else {
-            $('main').html(`<p>Sorry, villager "${query}" not found. Check spelling and try again.</p>`);
+            $('main').html(`<p>Sorry, villager "${userInput}" not found. Check spelling and try again.</p>`);
         }
         
     }, function(err) {
