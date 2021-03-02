@@ -46,10 +46,11 @@ main {
 }
 
 .villager-title {
-    width: 300px;
+    width: 250px;
     display: flex;
     align-items: center;
     border: 1px solid purple;
+    margin: 2px;
 }
 
 .villager-icon {
@@ -66,11 +67,33 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
+    height: 200px;
     border: 1px solid purple;
-    height: 250px;
+    border-top: none;
+    background-color: yellowgreen;
+    margin: 2px;
+    margin-top: 0;
+}
+
+.villager-details {
+    margin-left: 10px;
+}
+
+.detail-label {
+    text-transform: uppercase;
+    font-size: 10px;
+    margin: 0;
+}
+
+.detail {
+    margin: 0 0 8px 8px;
 }
 
 .villager-img {
+    text-align: center;
+}
+
+.image {
     height: 100px;
     width: 100px;
 }
@@ -78,20 +101,20 @@ main {
 .species-name {
     width: 150px;
     padding: 16px 10px;
-    margin: 0;
+    margin: 2px;
     border: 1px solid purple;
 }
 
 .gender-name {
     width: 150px;
     padding: 16px 10px;
-    margin: 0;
+    margin: 2px;
     border: 1px solid purple;
 }
 
 .personality-name {
     width: 150px;
     padding: 16px 10px;
-    margin: 0;
+    margin: 2px;
     border: 1px solid purple;
 }

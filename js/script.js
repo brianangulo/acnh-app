@@ -48,13 +48,20 @@ function render(villagerData) {
     </div>
     <div class="expanded-info">
         <div class="villager-details">
-            <p class="detail" id="species">Species: ${villagerData.species}</p>
-            <p class="detail" id="gender">Gender: ${villagerData.gender}</p>
-            <p class="detail" id="birthday">Birthday: ${villagerData['birthday-string']}</p>
-            <p class="detail" id="personality">Personality: ${villagerData.personality}</p>
-            <p class="detail" id="catchphrase">Catchphrase: ${villagerData['catch-phrase']}</p>
+            <p class="detail-label">Species: </p>
+            <p class="detail" id="species">${villagerData.species}</p>
+            <p class="detail-label">Gender: </p>
+            <p class="detail" id="gender">${villagerData.gender}</p>
+            <p class="detail-label">Birthday: </p>
+            <p class="detail" id="birthday">${villagerData['birthday-string']}</p>
+            <p class="detail-label">Personality: </p>
+            <p class="detail" id="personality">${villagerData.personality}</p>
+            <p class="detail-label">Catchphrase: </p>
+            <p class="detail" id="catchphrase">"${villagerData['catch-phrase']}"</p>
         </div>
-        <img class="villager-img" src="${villagerData['image_uri']}">
+        <div class="villager-img">
+            <img class="image" src="${villagerData['image_uri']}">
+        </div>
     </div>
 </div>`);
 
@@ -65,20 +72,27 @@ function render(villagerData) {
 
 function toggleDetails(evt) {
     let $target = $(evt.target);
+    let $villagerTitle;
     let $expandedInfo;
     
     if ($target[0].nodeName === 'DIV') {
+        $villagerTitle = $target;
         $expandedInfo = $target.next();
     } else {
+        $villagerTitle = $target.parent();
         $expandedInfo = $target.parent().next();
     };
     
     if ($expandedInfo.hasClass('hidden')) {
+        $villagerTitle.css('border-bottom', 'hidden');
+        $villagerTitle.css('margin-bottom', '0');
         $expandedInfo.fadeIn();
         $expandedInfo.removeClass('hidden');
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
+        $villagerTitle.css('border-bottom', '1px solid purple');
+        $villagerTitle.css('margin-bottom', '2px');
     };
 };
 
@@ -89,7 +103,7 @@ function handleSubmit(evt) {
     
     let userInput = $searchInput.val().toLowerCase();
     let query = userInput.charAt(0).toUpperCase() + userInput.slice(1);
-
+    
     $('h2').text(`Search Results for ${query}`);
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
@@ -101,6 +115,8 @@ function handleSubmit(evt) {
         if (villIndex !== -1) {
             render(data[villIndex]);
             
+            $('.villager-title').css('border-bottom', 'hidden');
+            $('.villager-title').css('margin-bottom', '0');
             $('.expanded-info').show();
             $('.expanded-info').removeClass('.hidden');
         } else {
