@@ -383,26 +383,40 @@ function showSea() {
 };
 
 function showArt() {
-    console.log('art');
+    if ($('body').find('h2').length) {
+        $('h2').text(`All Art`);
+    } else {
+        $(`<h2>All Art</h2>`).insertBefore('main');
+    };
+
     const $art = $.ajax('https://acnhapi.com/v1a/art/')
     .then(function(data) {
         sortByName(data);
 
         $('main').html('');
-        
+        data.forEach(function(art) {
+            renderArt(art);
+        });
     }, function(err) {
         console.log('Error', err);
     });
 };
 
 function showFossils() {
-    console.log('fossils');
+    if ($('body').find('h2').length) {
+        $('h2').text(`All Fossils`);
+    } else {
+        $(`<h2>All Fossils</h2>`).insertBefore('main');
+    };
+
     const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
     .then(function(data) {
         sortByName(data);
 
         $('main').html('');
-        
+        data.forEach(function(fossil) {
+            renderFossil(fossil);
+        });
     }, function(err) {
         console.log('Error', err);
     });
@@ -431,7 +445,7 @@ function getAvailable(data) {
     if (!availableTime) {
         availableTime = 'All Day';
     };
-}
+};
 
 function renderElement(data) {
     getAvailable(data);
@@ -494,7 +508,55 @@ function renderSea(data) {
     $('main').append($newElement);
     $('main').find('.expanded-info').css('display', 'none');
     $('main').find('.expanded-info').addClass('hidden');    
-}
+};
+
+function renderArt(data) {
+    let $newArt = $(`<div>
+    <div class='title'>
+        <p class="name no-icon">${data.name['name-USen']}</p>
+    </div>
+    <div class="expanded-info">
+        <div class="details">
+            <p class="detail-label">Buy Price: </p>
+            <p class="detail" id="buy-price">${data['buy-price']}</p>
+            <p class="detail-label">Sell Price: </p>
+            <p class="detail" id="sell-price">${data['sell-price']}</p>
+            <p class="detail-label">Description: </p>
+            <p class="detail" id="description">${data['museum-desc']}</p>
+        </div>
+        <div class="img-section">
+            <img class="image" src="${data['image_uri']}">
+        </div>
+    </div>
+</div>`);
+
+    $('main').append($newArt);
+    $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');
+};
+
+function renderFossil(data) {
+    let $newFossil = $(`<div>
+    <div class='title'>
+        <p class="name no-icon">${data.name['name-USen']}</p>
+    </div>
+    <div class="expanded-info">
+        <div class="details">
+            <p class="detail-label">Price: </p>
+            <p class="detail" id="price">${data.price}</p>
+            <p class="detail-label">Description: </p>
+            <p class="detail" id="description">${data['museum-phrase']}</p>
+        </div>
+        <div class="img-section">
+            <img class="image" src="${data['image_uri']}">
+        </div>
+    </div>
+</div>`);
+
+    $('main').append($newFossil);
+    $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');
+};
 
 function sortByName(array) {
     array.sort(function(a, b) {

@@ -117,6 +117,10 @@ main {
     background-color: rgba(107, 190, 182, 0.1);
 }
 
+.no-icon {
+    margin-left: 10px;
+}
+
 .icon {
     height: 30px;
     width: 30px;
