@@ -1,3 +1,7 @@
+// global variables
+let availableMonths;
+let availableTime;
+
 // cached elements
 const $searchInput = $('#search-input');
 const $searchButton = $('#search-button');
@@ -319,40 +323,119 @@ function showGenders(evt) {
 };
 
 function showBugs() {
+    if ($('body').find('h2').length) {
+        $('h2').text(`All Bugs`);
+    } else {
+        $(`<h2>All Bugs</h2>`).insertBefore('main');
+    };
+
     const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
     .then(function(data) {
         sortByName(data);
-        let testBug = data.find(function(bug) {
-            return bug.id === 6;
-        });
 
         $('main').html('');
         data.forEach(function(bug) {
-            renderBugs(bug);
+            renderElement(bug);
         })
     }, function(err) {
         console.log('Error', err);
     });
 };
 
-function renderBugs(data) {
-    let monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+function showFish() {
+    if ($('body').find('h2').length) {
+        $('h2').text(`All Fish`);
+    } else {
+        $(`<h2>All Fish</h2>`).insertBefore('main');
+    };
 
-    let availableMonths = data.availability['month-northern'];
+    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
+    .then(function(data) {
+        sortByName(data);
+
+        $('main').html('');
+        data.forEach(function(fish) {
+            renderElement(fish);
+        })
+    }, function(err) {
+        console.log('Error', err);
+    });
+};
+
+function showSea() {
+    if ($('body').find('h2').length) {
+        $('h2').text(`All Sea Creatures`);
+    } else {
+        $(`<h2>All Sea Creatures</h2>`).insertBefore('main');
+    };
+    
+    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
+    .then(function(data) {
+        sortByName(data);
+
+        $('main').html('');
+        data.forEach(function(sea) {
+            renderSea(sea);
+        });
+    }, function(err) {
+        console.log('Error', err);
+    });
+};
+
+function showArt() {
+    console.log('art');
+    const $art = $.ajax('https://acnhapi.com/v1a/art/')
+    .then(function(data) {
+        sortByName(data);
+
+        $('main').html('');
+        
+    }, function(err) {
+        console.log('Error', err);
+    });
+};
+
+function showFossils() {
+    console.log('fossils');
+    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
+    .then(function(data) {
+        sortByName(data);
+
+        $('main').html('');
+        
+    }, function(err) {
+        console.log('Error', err);
+    });
+};
+
+function getAvailable(data) {
+    let monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    availableMonths = data.availability['month-northern'];
     if (!availableMonths) {
         availableMonths = 'All Year';
+    } else if (availableMonths.includes('&')) {
+        availableMonths = availableMonths.split(' & ');
+        let first = availableMonths[0];
+        first = first.split('-');
+        let second = availableMonths[1];
+        second = second.split('-');
+
+        availableMonths = `${monthsArray[first[0] - 1]} - ${monthsArray[first[1] - 1]} ${'&'} ${monthsArray[second[0] - 1]} - ${monthsArray[second[1] - 1]}`
     } else {
         availableMonths = availableMonths.split('-');
         availableMonths = `${monthsArray[availableMonths[0] - 1]} - ${monthsArray[availableMonths[1] - 1]}`
     }
-
-    let availableTime = data.availability.time;
-    console.log(availableTime);
+    
+    availableTime = data.availability.time;
     if (!availableTime) {
         availableTime = 'All Day';
     };
+}
 
-    let $newBug = $(`<div class="bug">
+function renderElement(data) {
+    getAvailable(data);
+    let $newElement = $(`<div>
     <div class='title'>
         <img class="icon" src="${data['icon_uri']}">
         <p class="name">${data.name['name-USen']}</p>
@@ -360,15 +443,15 @@ function renderBugs(data) {
     <div class="expanded-info">
         <div class="details">
             <p class="detail-label">Availability: </p>
-            <p class="detail" id="species">${availableMonths}</p>
+            <p class="detail" id="availability">${availableMonths}</p>
             <p class="detail-label">Time: </p>
-            <p class="detail" id="gender">${availableTime}</p>
+            <p class="detail" id="time">${availableTime}</p>
             <p class="detail-label">Location: </p>
-            <p class="detail" id="birthday">${data.availability.location}</p>
+            <p class="detail" id="location">${data.availability.location}</p>
             <p class="detail-label">Rarity: </p>
-            <p class="detail" id="personality">${data.availability.rarity}</p>
+            <p class="detail" id="rarity">${data.availability.rarity}</p>
             <p class="detail-label">Price: </p>
-            <p class="detail" id="catchphrase">${data.price} bells</p>
+            <p class="detail" id="price">${data.price} bells</p>
         </div>
         <div class="img-section">
             <img class="image" src="${data['image_uri']}">
@@ -376,61 +459,48 @@ function renderBugs(data) {
     </div>
 </div>`);
 
-    $('main').append($newBug);
+    $('main').append($newElement);
     $('main').find('.expanded-info').css('display', 'none');
     $('main').find('.expanded-info').addClass('hidden');
 };
 
-function showFish() {
-    console.log('fish');
-    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
-    .then(function(data) {
-        sortByName(data);
-        console.log(data);
-    
-    }, function(err) {
-        console.log('Error', err);
-    });
-}
-function showSea() {
-    console.log('sea');
-    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
-    .then(function(data) {
-        sortByName(data);
-        console.log(data);
-    
-    }, function(err) {
-        console.log('Error', err);
-    });
-}
-function showArt() {
-    console.log('art');
-    const $art = $.ajax('https://acnhapi.com/v1a/art/')
-    .then(function(data) {
-        sortByName(data);
-        console.log(data);
-    
-    }, function(err) {
-        console.log('Error', err);
-    });
-}
-function showFossils() {
-    console.log('fossils');
-    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
-    .then(function(data) {
-        sortByName(data);
-        console.log(data);
-    
-    }, function(err) {
-        console.log('Error', err);
-    });
+function renderSea(data) {
+    getAvailable(data);
+
+    let $newElement = $(`<div>
+    <div class='title'>
+        <img class="icon" src="${data['icon_uri']}">
+        <p class="name">${data.name['name-USen']}</p>
+    </div>
+    <div class="expanded-info">
+        <div class="details">
+            <p class="detail-label">Availability: </p>
+            <p class="detail" id="availability">${availableMonths}</p>
+            <p class="detail-label">Time: </p>
+            <p class="detail" id="time">${availableTime}</p>
+            <p class="detail-label">Speed: </p>
+            <p class="detail" id="speed">${data.speed}</p>
+            <p class="detail-label">Shadow: </p>
+            <p class="detail" id="shadow">${data.shadow}</p>
+            <p class="detail-label">Price: </p>
+            <p class="detail" id="price">${data.price} bells</p>
+        </div>
+        <div class="img-section">
+            <img class="image" src="${data['image_uri']}">
+        </div>
+    </div>
+</div>`);
+
+    $('main').append($newElement);
+    $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');    
 }
 
 function sortByName(array) {
     array.sort(function(a, b) {
         let nameA = a.name['name-USen'].toUpperCase();
         let nameB = b.name['name-USen'].toUpperCase();
-
+        
         if (nameA < nameB) {
             return -1;
         } else if (nameA > nameB) {
