@@ -14,6 +14,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin: 0;
 }
 
 #body-container {
@@ -26,7 +27,9 @@ header {
     align-items: center;
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
+    padding-bottom: 15px;
     background-image: url("../img/pattern-leaves-turquoise.jpg");
     background-color: #6dbdb6;
 }
@@ -55,6 +58,7 @@ header {
 
 .subnav-content {
     display: none;
+    margin-top: 8px;
     position: absolute;
     background-color: #e4f2e8;
 }
@@ -63,13 +67,15 @@ header {
     display: flex;
 }
 
-.subnav-content a:hover {
+.navbar a:hover, .subnav:hover .subnavbtn, .subnav-content a:hover {
     background-color: #eee;
-    color: black;
   }
 
 .nav-link {
     padding: 12px;
+    text-decoration: none;
+    color: #000;
+    margin: 0;
 }
 
 form {
@@ -90,11 +96,16 @@ form {
 }
 
 h1 {
-    margin-top: 120px;
+    margin-top: 140px;
+    color: #6dbdb6;
+}
+
+#poster {
+    width: 80vw;
 }
 
 h2 {
-    margin-top: 120px;
+    margin-top: 140px;
     margin-left: 40px;
     color: #6dbdb6;
 }
@@ -177,8 +188,6 @@ main {
 }
 
 footer {
-    flex-shrink: 0;
-    width: 100%;
     text-align: center;
     font-style: italic;
     padding: 20px;
