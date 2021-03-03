@@ -199,19 +199,25 @@ footer {
 
 @media (max-width: 576px) {
     #logo {
-        margin: 10px;
-        margin-top: 20px;
-        height: 50px; 
+        display: none;
+    }
+
+    header {
+        justify-content: center;
     }
 }
 
 @media (max-width: 680px) {
+    #logo {
+        margin-left: 10px;
+    }
+    
     .heading-section {
         width: 90%;
     }
 }
 
-@media (max-width: 995px) {    
+@media (max-width: 1030px) {    
     header {
         padding-bottom: 30px;
     }
