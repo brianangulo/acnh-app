@@ -108,7 +108,7 @@ main {
     justify-content: center;
 }
 
-.villager-title {
+.title {
     width: 300px;
     display: flex;
     align-items: center;
@@ -117,19 +117,19 @@ main {
     background-color: rgba(107, 190, 182, 0.1);
 }
 
-.villager-icon {
+.icon {
     height: 30px;
     width: 30px;
     margin: 10px;
 }
 
-.villager-name {
+.name {
     display: inline;
 }
 
 .expanded-info {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     align-items: center;
     height: 200px;
     border: 1px solid #6dbdb6;
@@ -139,7 +139,7 @@ main {
     background-color: rgba(107, 190, 182, 0.1);
 }
 
-.villager-details {
+.details {
     margin-left: 10px;
 }
 
@@ -154,7 +154,7 @@ main {
     margin: 0 0 8px 15px;
 }
 
-.villager-img {
+.img-section {
     text-align: center;
 }
 

@@ -15,7 +15,7 @@ const $fossilLink = $('#fossil-link');
 
 // event handlers
 $allVillagersLink.on('click', allVillagers);
-$('main').on('click', '.villager-title', toggleDetails);
+$('main').on('click', '.title', toggleDetails);
 $('form').on('submit', handleSubmit);
 $speciesLink.on('click', handleSpeciesClick);
 $genderLink.on('click', handleGenderClick);
@@ -52,12 +52,12 @@ function allVillagers() {
 
 function render(villagerData) {
     let $newVillager = $(`<div class="villager">
-    <div class='villager-title'>
-        <img class="villager-icon" src="${villagerData['icon_uri']}">
-        <p class="villager-name">${villagerData.name['name-USen']}</p>
+    <div class='title'>
+        <img class="icon" src="${villagerData['icon_uri']}">
+        <p class="name">${villagerData.name['name-USen']}</p>
     </div>
     <div class="expanded-info">
-        <div class="villager-details">
+        <div class="details">
             <p class="detail-label">Species: </p>
             <p class="detail" id="species">${villagerData.species}</p>
             <p class="detail-label">Gender: </p>
@@ -69,7 +69,7 @@ function render(villagerData) {
             <p class="detail-label">Catchphrase: </p>
             <p class="detail" id="catchphrase">"${villagerData['catch-phrase']}"</p>
         </div>
-        <div class="villager-img">
+        <div class="img-section">
             <img class="image" src="${villagerData['image_uri']}">
         </div>
     </div>
@@ -82,28 +82,28 @@ function render(villagerData) {
 
 function toggleDetails(evt) {
     let $target = $(evt.target);
-    let $villagerTitle;
+    let $title;
     let $expandedInfo;
     
     if ($target[0].nodeName === 'DIV') {
-        $villagerTitle = $target;
+        $title = $target;
         $expandedInfo = $target.next();
     } else {
-        $villagerTitle = $target.parent();
+        $title = $target.parent();
         $expandedInfo = $target.parent().next();
     };
     
     if ($expandedInfo.hasClass('hidden')) {
-        $villagerTitle.css('border-bottom', 'hidden');
-        $villagerTitle.css('margin-bottom', '0');
+        $title.css('border-bottom', 'hidden');
+        $title.css('margin-bottom', '0');
         $expandedInfo.fadeIn();
         $expandedInfo.removeClass('hidden');
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
         setTimeout(function() {
-            $villagerTitle.css('border-bottom', '1px solid #6dbdb6');
-            $villagerTitle.css('margin-bottom', '8px');
+            $title.css('border-bottom', '1px solid #6dbdb6');
+            $title.css('margin-bottom', '8px');
         }, 400);
     };
 };
@@ -134,8 +134,8 @@ function handleSubmit(evt) {
         if (villIndex !== -1) {
             render(data[villIndex]);
             
-            $('.villager-title').css('border-bottom', 'hidden');
-            $('.villager-title').css('margin-bottom', '0');
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
             $('.expanded-info').show();
             $('.expanded-info').removeClass('.hidden');
         } else {
@@ -322,12 +322,65 @@ function showBugs() {
     const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
     .then(function(data) {
         sortByName(data);
-        console.log(data);
+        let testBug = data.find(function(bug) {
+            return bug.id === 6;
+        });
 
+        $('main').html('');
+        data.forEach(function(bug) {
+            renderBugs(bug);
+        })
     }, function(err) {
         console.log('Error', err);
     });
-}
+};
+
+function renderBugs(data) {
+    let monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    let availableMonths = data.availability['month-northern'];
+    if (!availableMonths) {
+        availableMonths = 'All Year';
+    } else {
+        availableMonths = availableMonths.split('-');
+        availableMonths = `${monthsArray[availableMonths[0] - 1]} - ${monthsArray[availableMonths[1] - 1]}`
+    }
+
+    let availableTime = data.availability.time;
+    console.log(availableTime);
+    if (!availableTime) {
+        availableTime = 'All Day';
+    };
+
+    let $newBug = $(`<div class="bug">
+    <div class='title'>
+        <img class="icon" src="${data['icon_uri']}">
+        <p class="name">${data.name['name-USen']}</p>
+    </div>
+    <div class="expanded-info">
+        <div class="details">
+            <p class="detail-label">Availability: </p>
+            <p class="detail" id="species">${availableMonths}</p>
+            <p class="detail-label">Time: </p>
+            <p class="detail" id="gender">${availableTime}</p>
+            <p class="detail-label">Location: </p>
+            <p class="detail" id="birthday">${data.availability.location}</p>
+            <p class="detail-label">Rarity: </p>
+            <p class="detail" id="personality">${data.availability.rarity}</p>
+            <p class="detail-label">Price: </p>
+            <p class="detail" id="catchphrase">${data.price} bells</p>
+        </div>
+        <div class="img-section">
+            <img class="image" src="${data['image_uri']}">
+        </div>
+    </div>
+</div>`);
+
+    $('main').append($newBug);
+    $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');
+};
+
 function showFish() {
     console.log('fish');
     const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
