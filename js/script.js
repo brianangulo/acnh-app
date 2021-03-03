@@ -134,10 +134,10 @@ function handleSubmit(evt) {
     
     let userInput = $searchInput.val()
     let query = $searchInput.val().toLowerCase();
-    query = capitalize(query);
+    let capitalQuery = capitalize(query);
     
     $searchInput.val('');
-
+    
     if ($('body').find('h2').length) {
         $('h2').text(`Search Results for "${userInput}"`);
     } else {
@@ -146,24 +146,117 @@ function handleSubmit(evt) {
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
-        let villIndex = data.findIndex(function(vill) {
-            return vill.name['name-USen'] === query; 
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === capitalQuery; 
         });
-        
-        if (villIndex !== -1) {
-            render(data[villIndex]);
+
+        if (index !== -1) {
+            render(data[index]);
             
             $('.title').css('border-bottom', 'hidden');
             $('.title').css('margin-bottom', '0');
             $('.expanded-info').show();
             $('.expanded-info').removeClass('.hidden');
-        } else {
-            $('main').html(`<p>Sorry, villager "${userInput}" not found. Check spelling and try again.</p>`);
-        }
-        
+        }  
     }, function(err) {
         console.log('Error ', err);
     });
+
+    const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
+    .then(function(data) {
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === query; 
+        });
+
+        if (index !== -1) {
+            renderElement(data[index]);
+            
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        }      
+    }, function(err) {
+        console.log('Error ', err);
+    });
+
+    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
+    .then(function(data) {
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === query; 
+        });
+
+        if (index !== -1) {
+            renderElement(data[index]);
+            
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        }     
+    }, function(err) {
+        console.log('Error ', err);
+    });
+
+    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
+    .then(function(data) {
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === query; 
+        });
+
+        if (index !== -1) {
+            renderSea(data[index]);
+            
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        }     
+    }, function(err) {
+        console.log('Error ', err);
+    });
+
+    const $art = $.ajax('https://acnhapi.com/v1a/art/')
+    .then(function(data) {
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === query; 
+        });
+
+        if (index !== -1) {
+            renderArt(data[index]);
+            
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        }     
+    }, function(err) {
+        console.log('Error ', err);
+    });
+
+    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
+    .then(function(data) {
+        let index = data.findIndex(function(element) {
+            return element.name['name-USen'] === query; 
+        });
+
+        if (index !== -1) {
+            renderFossil(data[index]);
+            
+            $('.title').css('border-bottom', 'hidden');
+            $('.title').css('margin-bottom', '0');
+            $('.expanded-info').show();
+            $('.expanded-info').removeClass('.hidden');
+        }     
+    }, function(err) {
+        console.log('Error ', err);
+    });
+
+    setTimeout(function() {
+        if (!$('main').find('div').length) {
+            $('main').html(`<p>Sorry, no results for "${userInput}." Check spelling and try again or browse through the navigation above.</p>`);
+        };
+    }, 1000);
 };
 
 function handleSpeciesClick() {
@@ -537,9 +630,9 @@ function renderArt(data) {
     <div class="expanded-info">
         <div class="details">
             <p class="detail-label">Buy Price: </p>
-            <p class="detail" id="buy-price">${data['buy-price']}</p>
+            <p class="detail" id="buy-price">${data['buy-price']} bells</p>
             <p class="detail-label">Sell Price: </p>
-            <p class="detail" id="sell-price">${data['sell-price']}</p>
+            <p class="detail" id="sell-price">${data['sell-price']} bells</p>
             <p class="detail-label">Description: </p>
             <p class="detail" id="description">${data['museum-desc']}</p>
         </div>
@@ -564,7 +657,7 @@ function renderFossil(data) {
     <div class="expanded-info">
         <div class="details">
             <p class="detail-label">Price: </p>
-            <p class="detail" id="price">${data.price}</p>
+            <p class="detail" id="price">${data.price} bells</p>
             <p class="detail-label">Description: </p>
             <p class="detail" id="description">${data['museum-phrase']}</p>
         </div>

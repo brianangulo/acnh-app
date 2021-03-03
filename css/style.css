@@ -135,7 +135,7 @@ main {
     display: grid;
     grid-template-columns: 3fr 2fr;
     align-items: center;
-    height: 200px;
+    /* height: 200px; */
     border: 1px solid #6dbdb6;
     border-top: none;
     margin: 8px;
@@ -145,6 +145,7 @@ main {
 
 .details {
     margin-left: 10px;
+    max-width: 150px;
 }
 
 .detail-label {
