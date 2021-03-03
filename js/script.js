@@ -35,6 +35,21 @@ $fossilLink.on('click', showFossils);
 
 
 // functions
+function capitalize(name) {
+    let capitalName;
+    if (name.includes(' ')) {
+        let words = name.split(' ');
+        let capitalWords = [];
+        words.forEach(function(word) {
+            capitalWords.push(word.charAt(0).toUpperCase() + word.slice(1));
+        });
+        capitalName = capitalWords.join(' ');
+    } else {
+        capitalName = name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    return capitalName;
+};
+
 function allVillagers() {
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
@@ -119,7 +134,7 @@ function handleSubmit(evt) {
     
     let userInput = $searchInput.val()
     let query = $searchInput.val().toLowerCase();
-    query = query.charAt(0).toUpperCase() + query.slice(1);
+    query = capitalize(query);
     
     $searchInput.val('');
 
@@ -246,7 +261,7 @@ function renderPersonality(input) {
 
 function showSpecies(evt) {
     let $target = $(evt.target).attr('id');
-    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+    $target = capitalize($target);
 
     if ($('body').find('h2').length) {
         $('h2').text(`All ${$target} Villagers`);
@@ -272,7 +287,7 @@ function showSpecies(evt) {
 
 function showPersonalities(evt) {
     let $target = $(evt.target).attr('id');
-    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+    $target = capitalize($target);
     
     if ($('body').find('h2').length) {
         $('h2').text(`All ${$target} Villagers`);
@@ -298,7 +313,7 @@ function showPersonalities(evt) {
 
 function showGenders(evt) {
     let $target = $(evt.target).attr('id');
-    $target = $target.charAt(0).toUpperCase() + $target.slice(1);
+    $target = capitalize($target);
 
     if ($('body').find('h2').length) {
         $('h2').text(`All ${$target} Villagers`);
@@ -449,10 +464,11 @@ function getAvailable(data) {
 
 function renderElement(data) {
     getAvailable(data);
+    let name = capitalize(data.name['name-USen']);
     let $newElement = $(`<div>
     <div class='title'>
         <img class="icon" src="${data['icon_uri']}">
-        <p class="name">${data.name['name-USen']}</p>
+        <p class="name">${name}</p>
     </div>
     <div class="expanded-info">
         <div class="details">
@@ -480,11 +496,12 @@ function renderElement(data) {
 
 function renderSea(data) {
     getAvailable(data);
+    let name = capitalize(data.name['name-USen']);
 
     let $newElement = $(`<div>
     <div class='title'>
         <img class="icon" src="${data['icon_uri']}">
-        <p class="name">${data.name['name-USen']}</p>
+        <p class="name">${name}</p>
     </div>
     <div class="expanded-info">
         <div class="details">
@@ -511,9 +528,11 @@ function renderSea(data) {
 };
 
 function renderArt(data) {
+    let name = capitalize(data.name['name-USen']);
+
     let $newArt = $(`<div>
     <div class='title'>
-        <p class="name no-icon">${data.name['name-USen']}</p>
+        <p class="name no-icon">${name}</p>
     </div>
     <div class="expanded-info">
         <div class="details">
@@ -536,9 +555,11 @@ function renderArt(data) {
 };
 
 function renderFossil(data) {
+    let name = capitalize(data.name['name-USen']);
+
     let $newFossil = $(`<div>
     <div class='title'>
-        <p class="name no-icon">${data.name['name-USen']}</p>
+        <p class="name no-icon">${name}</p>
     </div>
     <div class="expanded-info">
         <div class="details">
