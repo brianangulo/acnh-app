@@ -5,6 +5,12 @@ const $allVillagersLink = $('#all-villagers');
 const $speciesLink = $('#species-link');
 const $genderLink = $('#gender-link');
 const $personalityLink = $('#personality-link');
+const $bugLink = $('#bug-link');
+const $fishLink = $('#fish-link');
+const $seaLink = $('#sea-link');
+const $artLink = $('#art-link');
+const $fossilLink = $('#fossil-link');
+
 
 
 // event handlers
@@ -17,31 +23,25 @@ $personalityLink.on('click', handlePersonalityClick);
 $('main').on('click', '.species', showSpecies);
 $('main').on('click', '.gender', showGenders);
 $('main').on('click', '.personality', showPersonalities);
+$bugLink.on('click', showBugs);
+$fishLink.on('click', showFish);
+$seaLink.on('click', showSea);
+$artLink.on('click', showArt);
+$fossilLink.on('click', showFossils);
+
 
 // functions
 function allVillagers() {
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
-        data.sort(function(a, b) {
-            let nameA = a.name['name-USen'].toUpperCase();
-            let nameB = b.name['name-USen'].toUpperCase();
-
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
         if ($('body').find('h2').length) {
             $('h2').text('All Villagers');
         } else {
             $(`<h2>All Villagers</h2>`).insertBefore('main');
         };
-        
         $('main').html('');
+
+        sortByName(data);
         data.forEach(function(vill) {
             render(vill);
         })
@@ -163,17 +163,9 @@ function handleSpeciesClick() {
             }
         });
 
-        species.sort(function(a, b) {
-            if (a < b) {
-                return -1
-            } else if (a > b) {
-                return 1;
-            } else {
-                return;
-            }
-        })
-
         $('main').html('');
+        
+        sortArray(species);
         species.forEach(function(animal) {
             renderSpecies(animal);
         })
@@ -229,17 +221,9 @@ function handlePersonalityClick() {
             }
         });
 
-        personalities.sort(function(a, b) {
-            if (a < b) {
-                return -1
-            } else if (a > b) {
-                return 1;
-            } else {
-                return;
-            }
-        })
-
         $('main').html('');
+        
+        sortArray(personalities);
         personalities.forEach(function(animal) {
             renderPersonality(animal);
         })
@@ -270,18 +254,7 @@ function showSpecies(evt) {
     .then(function(data) {
         let targetSpecies = data.filter(vill => vill.species === $target);
 
-        targetSpecies.sort(function(a, b) {
-            let nameA = a.name['name-USen'].toUpperCase();
-            let nameB = b.name['name-USen'].toUpperCase();
-
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        sortByName(targetSpecies);
 
         $('main').html('');
         targetSpecies.forEach(function(vill) {
@@ -307,18 +280,7 @@ function showPersonalities(evt) {
     .then(function(data) {
         let targetPersonality = data.filter(vill => vill.personality === $target);
 
-        targetPersonality.sort(function(a, b) {
-            let nameA = a.name['name-USen'].toUpperCase();
-            let nameB = b.name['name-USen'].toUpperCase();
-
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        sortByName(targetPersonality);
     
         $('main').html('');
         targetPersonality.forEach(function(vill) {
@@ -344,18 +306,7 @@ function showGenders(evt) {
     .then(function(data) {
         let targetGender = data.filter(vill => vill.gender === $target);
     
-        targetGender.sort(function(a, b) {
-            let nameA = a.name['name-USen'].toUpperCase();
-            let nameB = b.name['name-USen'].toUpperCase();
-    
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        sortByName(targetGender);
     
         $('main').html('');
         targetGender.forEach(function(vill) {
@@ -366,3 +317,87 @@ function showGenders(evt) {
         console.log('Error ', err);
     });
 };
+
+function showBugs() {
+    const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
+    .then(function(data) {
+        sortByName(data);
+        console.log(data);
+
+    }, function(err) {
+        console.log('Error', err);
+    });
+}
+function showFish() {
+    console.log('fish');
+    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
+    .then(function(data) {
+        sortByName(data);
+        console.log(data);
+    
+    }, function(err) {
+        console.log('Error', err);
+    });
+}
+function showSea() {
+    console.log('sea');
+    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
+    .then(function(data) {
+        sortByName(data);
+        console.log(data);
+    
+    }, function(err) {
+        console.log('Error', err);
+    });
+}
+function showArt() {
+    console.log('art');
+    const $art = $.ajax('https://acnhapi.com/v1a/art/')
+    .then(function(data) {
+        sortByName(data);
+        console.log(data);
+    
+    }, function(err) {
+        console.log('Error', err);
+    });
+}
+function showFossils() {
+    console.log('fossils');
+    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
+    .then(function(data) {
+        sortByName(data);
+        console.log(data);
+    
+    }, function(err) {
+        console.log('Error', err);
+    });
+}
+
+function sortByName(array) {
+    array.sort(function(a, b) {
+        let nameA = a.name['name-USen'].toUpperCase();
+        let nameB = b.name['name-USen'].toUpperCase();
+
+        if (nameA < nameB) {
+            return -1;
+        } else if (nameA > nameB) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+    return array;
+};
+
+function sortArray(array) {
+    array.sort(function(a, b) {
+        if (a < b) {
+            return -1
+        } else if (a > b) {
+            return 1;
+        } else {
+            return;
+        }
+    });
+    return array;
+}
