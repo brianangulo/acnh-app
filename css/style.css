@@ -21,6 +21,7 @@ body {
     flex: 1 0 auto;
 }
 
+/* top section */
 header {
     display: flex;
     justify-content: space-between;
@@ -96,6 +97,7 @@ form {
     border: none;
 }
 
+/* home page */
 h1 {
     margin-top: 140px;
     color: #6dbdb6;
@@ -105,6 +107,7 @@ h1 {
     width: 80vw;
 }
 
+/* pages */
 h2 {
     margin-top: 140px;
     margin-left: 40px;
@@ -120,6 +123,7 @@ main {
     justify-content: center;
 }
 
+/* profile card */
 .title {
     width: 300px;
     display: flex;
@@ -177,6 +181,7 @@ main {
 .image {
     height: 100px;
     width: 100px;
+    object-fit: cover;
 }
 
 .sort-label-name {
@@ -196,7 +201,7 @@ footer {
     background-color: #6dbdb6;
 }
 
-
+/* media queries */
 @media (max-width: 576px) {
     #logo {
         display: none;
