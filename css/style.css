@@ -155,7 +155,11 @@ main {
     border-top: none;
     margin: 8px;
     margin-top: 0;
-    background-color: rgba(107, 190, 182, 0.1);
+    /* background-color: rgba(107, 190, 182, 0.1); */
+
+    background-color: rgba(219, 238, 231, 1);
+    position: absolute;
+    width: 300px;
 }
 
 .details {
@@ -179,7 +183,6 @@ main {
 }
 
 .image {
-    height: 100px;
     width: 100px;
     object-fit: cover;
 }
