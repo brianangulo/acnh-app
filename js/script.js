@@ -24,14 +24,14 @@ $allVillagersLink.on('click', allVillagers);
 $speciesLink.on('click', handleOptionClick);
 $genderLink.on('click', handleOptionClick);
 $personalityLink.on('click', handleOptionClick);
-$('main').on('click', '.species', showOptions);
-$('main').on('click', '.gender', showOptions);
-$('main').on('click', '.personality', showOptions);
-$bugLink.on('click', showBugs);
-$fishLink.on('click', showFish);
-$seaLink.on('click', showSea);
-$artLink.on('click', showArt);
-$fossilLink.on('click', showFossils);
+$('main').on('click', '.species', showVillOptions);
+$('main').on('click', '.gender', showVillOptions);
+$('main').on('click', '.personality', showVillOptions);
+$bugLink.on('click', showOtherOptions);
+$fishLink.on('click', showOtherOptions);
+$seaLink.on('click', showOtherOptions);
+$artLink.on('click', showOtherOptions);
+$fossilLink.on('click', showOtherOptions);
 
 
 // functions
@@ -133,7 +133,7 @@ function toggleDetails(evt) {
 function handleSubmit(evt) {
     evt.preventDefault();
     
-    let userInput = $searchInput.val()
+    let userInput = $searchInput.val();
     let query = $searchInput.val().toLowerCase();
     let capitalQuery = capitalize(query);
     $searchInput.val('');
@@ -237,7 +237,7 @@ function allVillagers() {
     
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
-        sortByName(data);
+        sortAlphabetically(data);
         data.forEach(function(vill) {
             render(vill);
         })
@@ -261,7 +261,7 @@ function handleOptionClick(evt) {
             }
         });
         
-        sortArray(optionArray);
+        sortAlphabetically(optionArray);
         optionArray.forEach(function(animal) {
             renderOption(animal, type);
         })
@@ -280,7 +280,7 @@ function renderOption(input, className) {
 };
 
 // displays all matching villagers based on characteristic
-function showOptions(evt) {
+function showVillOptions(evt) {
     let $target = capitalize($(evt.target).attr('id'));
     prepPage(`All ${$target} Villagers`);
 
@@ -289,7 +289,7 @@ function showOptions(evt) {
         let targetType = $(evt.target).parent().attr('class');
         let targetArray = [];
         targetArray = data.filter(vill => vill[targetType] === $target);
-        sortByName(targetArray);
+        sortAlphabetically(targetArray);
         targetArray.forEach(function(vill) {
             render(vill);
         });
@@ -298,91 +298,23 @@ function showOptions(evt) {
     });
 };
 
-// displays all bugs on the page
-function showBugs(evt) {
-    prepPage('All Bugs');
-
+// displays all critters and collectibles on the page
+function showOtherOptions(evt) {
     let type = $(evt.target).attr('id').split('-link')[0];
+    console.log(type);
 
-    const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
-    .then(function(data) {
-        sortByName(data);
-
-        data.forEach(function(bug) {
-            renderElement(bug, type);
-        })
-    }, function(err) {
-        console.log('Error', err);
-    });
-};
-
-// displays all fish on the page
-function showFish(evt) {
-    prepPage('All Fish');
-
-    let type = $(evt.target).attr('id').split('-link')[0];
-
-    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
-    .then(function(data) {
-        sortByName(data);
-
-        data.forEach(function(fish) {
-            renderElement(fish, type);
-        })
-    }, function(err) {
-        console.log('Error', err);
-    });
-};
-
-// displays all sea creatures on the page
-function showSea(evt) {
-    prepPage('All Sea Creatures');
+    if (type === 'bug' || type === 'fossil') {
+        type = type + 's';
+    }
+    prepPage(`All ${capitalize(type)}`);
     
-    let type = $(evt.target).attr('id').split('-link')[0];
-
-    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
+    const $request = $.ajax(`https://acnhapi.com/v1a/${type}`)
     .then(function(data) {
-        sortByName(data);
+        sortAlphabetically(data);
 
-        data.forEach(function(sea) {
-            renderElement(sea, type);
-        });
-    }, function(err) {
-        console.log('Error', err);
-    });
-};
-
-// displays all artworks on the page
-function showArt(evt) {
-    prepPage('All Art');
-
-    let type = $(evt.target).attr('id').split('-link')[0];
-
-    const $art = $.ajax('https://acnhapi.com/v1a/art/')
-    .then(function(data) {
-        sortByName(data);
-
-        data.forEach(function(art) {
-            renderElement(art, type);
-        });
-    }, function(err) {
-        console.log('Error', err);
-    });
-};
-
-// displays all fossils on the page
-function showFossils(evt) {
-    prepPage('All Fossils');
-
-    let type = $(evt.target).attr('id').split('-link')[0];
-
-    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
-    .then(function(data) {
-        sortByName(data);
-
-        data.forEach(function(fossil) {
-            renderElement(fossil, type);
-        });
+        data.forEach(function(element) {
+            renderElement(element, type);
+        })
     }, function(err) {
         console.log('Error', err);
     });
@@ -420,7 +352,7 @@ function renderElement(data, type) {
     let newElem = `<div>
     <div class='title'>`;
     
-    if (type === 'bug' || type === 'fish' || type === 'sea') {
+    if (type === 'bugs' || type === 'fish' || type === 'sea') {
         getAvailable(data);
         newElem += `<img class="icon" src="${data['icon_uri']}">
         <p class="name">${name}</p>
@@ -431,7 +363,7 @@ function renderElement(data, type) {
         <p class="detail" id="availability">${availableMonths}</p>
         <p class="detail-label">Time: </p>
         <p class="detail" id="time">${availableTime}</p>`;
-        if (type === 'bug' || type === 'fish') {
+        if (type === 'bugs' || type === 'fish') {
             newElem += `<p class="detail-label">Location: </p>
             <p class="detail" id="location">${data.availability.location}</p>
             <p class="detail-label">Rarity: </p>
@@ -444,7 +376,7 @@ function renderElement(data, type) {
         }
         newElem += `<p class="detail-label">Price: </p>
         <p class="detail" id="price">${data.price} bells</p>`;
-    } else if (type === 'art' || type === 'fossil') {
+    } else if (type === 'art' || type === 'fossils') {
         newElem += `<p class="name no-icon">${name}</p>
         </div>
         <div class="expanded-info">
@@ -456,7 +388,7 @@ function renderElement(data, type) {
             <p class="detail" id="sell-price">${data['sell-price']} bells</p>
             <p class="detail-label">Description: </p>
             <p class="detail" id="description">${data['museum-desc']}</p>`;
-        } else if (type === 'fossil') {
+        } else if (type === 'fossils') {
             newElem += `<p class="detail-label">Price: </p>
             <p class="detail" id="price">${data.price} bells</p>
             <p class="detail-label">Description: </p>
@@ -476,32 +408,20 @@ function renderElement(data, type) {
     $('main').find('.expanded-info').addClass('hidden');
 };
 
-// sort array of objects alphabetically by name property
-function sortByName(array) {
+// sort array alphabetically
+function sortAlphabetically(array) {
     array.sort(function(a, b) {
-        let nameA = a.name['name-USen'].toUpperCase();
-        let nameB = b.name['name-USen'].toUpperCase();
-        
-        if (nameA < nameB) {
-            return -1;
-        } else if (nameA > nameB) {
-            return 1;
-        } else {
-            return 0;
+        if (typeof(a) === 'object') {
+            a = a.name['name-USen'].toUpperCase();
+            b = b.name['name-USen'].toUpperCase();
         }
-    });
-    return array;
-};
-
-// sort array elements alphabetically
-function sortArray(array) {
-    array.sort(function(a, b) {
+        
         if (a < b) {
-            return -1
+            return -1;
         } else if (a > b) {
             return 1;
         } else {
-            return;
+            return 0;
         }
     });
     return array;
