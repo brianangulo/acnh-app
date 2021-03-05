@@ -165,39 +165,14 @@ function handleSubmit(evt) {
         console.log('Error ', err);
     });
 
-    const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
-    .then(function(data) {
-        searchResults(data, query);
-    }, function(err) {
-        console.log('Error ', err);
-    });
-
-    const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
-    .then(function(data) {
-        searchResults(data, query);
-    }, function(err) {
-        console.log('Error ', err);
-    });
-
-    const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
-    .then(function(data) { 
-        searchResults(data, query);
-    }, function(err) {
-        console.log('Error ', err);
-    });
-
-    const $art = $.ajax('https://acnhapi.com/v1a/art/')
-    .then(function(data) { 
-        searchResults(data, query);
-    }, function(err) {
-        console.log('Error ', err);
-    });
-
-    const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
-    .then(function(data) {  
-        searchResults(data, query);
-    }, function(err) {
-        console.log('Error ', err);
+    const endpoints = ['bugs', 'fish', 'sea', 'art', 'fossils'];
+    endpoints.forEach(function(point) {
+        const $data = $.ajax(`https://acnhapi.com/v1a/${point}/`)
+        .then(function(data) {
+            searchResults(data, query);
+        }, function(err) {
+            console.log('Error ', err);
+        });
     });
 
     setTimeout(function() {
