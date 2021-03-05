@@ -27,3 +27,4 @@ A web application to display information about Animal Crossing: New Horizons vil
 ## Future Goals
 * Use `localstorage` to allow the user to save favorite villagers and items
 * Add a section for NPC characters
+* Add CSS animation for long page loads
