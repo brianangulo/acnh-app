@@ -147,7 +147,6 @@ function handleSubmit(evt) {
     
     let userInput = $searchInput.val();
     let query = $searchInput.val().toLowerCase();
-    let capitalQuery = capitalize(query);
     $searchInput.val('');
 
     prepPage(`Search Results for "${userInput}"`);
@@ -155,7 +154,7 @@ function handleSubmit(evt) {
     const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
     .then(function(data) {
         let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === capitalQuery; 
+            return element.name['name-USen'] === capitalize(query); 
         });
 
         if (index !== -1) {
@@ -168,70 +167,35 @@ function handleSubmit(evt) {
 
     const $bugs = $.ajax('https://acnhapi.com/v1a/bugs/')
     .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === query; 
-        });
-
-        if (index !== -1) {
-            renderElement(data[index]);
-            autoShowDetails();
-        }      
+        searchResults(data, query);
     }, function(err) {
         console.log('Error ', err);
     });
 
     const $fish = $.ajax('https://acnhapi.com/v1a/fish/')
     .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === query; 
-        });
-
-        if (index !== -1) {
-            renderElement(data[index]);
-            autoShowDetails();
-        }     
+        searchResults(data, query);
     }, function(err) {
         console.log('Error ', err);
     });
 
     const $sea = $.ajax('https://acnhapi.com/v1a/sea/')
-    .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === query; 
-        });
-
-        if (index !== -1) {
-            renderSea(data[index]);
-            autoShowDetails();
-        }     
+    .then(function(data) { 
+        searchResults(data, query);
     }, function(err) {
         console.log('Error ', err);
     });
 
     const $art = $.ajax('https://acnhapi.com/v1a/art/')
-    .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === query; 
-        });
-
-        if (index !== -1) {
-            renderArt(data[index]);
-            autoShowDetails();
-        }     
+    .then(function(data) { 
+        searchResults(data, query);
     }, function(err) {
         console.log('Error ', err);
     });
 
     const $fossils = $.ajax('https://acnhapi.com/v1a/fossils/')
-    .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === query; 
-        });
-
-        if (index !== -1) {
-            renderFossil(data[index]);
-            autoShowDetails();
-        }     
+    .then(function(data) {  
+        searchResults(data, query);
     }, function(err) {
         console.log('Error ', err);
     });
@@ -240,7 +204,21 @@ function handleSubmit(evt) {
         if (!$('main').find('div').length) {
             $('main').html(`<p>Sorry, no results for "${userInput}." Check spelling and try again or browse through the navigation above.</p>`);
         };
-    }, 540);
+    }, 500);
+};
+
+// finds object in api data and calls function to render on page
+function searchResults(data, query) {
+    let index = data.findIndex(function(element) {
+        return element.name['name-USen'] === query; 
+    });
+
+    if (index !== -1) {
+        let image = data[index]['image_uri']
+        let type = image.split('/')[5];
+        renderElement(data[index], type);
+        autoShowDetails();
+    };
 };
 
 // lists all villagers on the page
