@@ -87,7 +87,7 @@ function autoShowDetails() {
     $('.title').css('border-bottom', 'hidden');
     $('.title').css('margin-bottom', '0');
     $('.expanded-info').show();
-    $('.expanded-info').removeClass('.hidden');
+    $('.expanded-info').removeClass('hidden');
 };
 
 // clear main page and set the h2 to prepare the page
@@ -151,25 +151,12 @@ function handleSubmit(evt) {
 
     prepPage(`Search Results for "${userInput}"`);
     
-    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
-    .then(function(data) {
-        let index = data.findIndex(function(element) {
-            return element.name['name-USen'] === capitalize(query); 
-        });
-
-        if (index !== -1) {
-            render(data[index]);
-            autoShowDetails();
-        }  
-    }, function(err) {
-        console.log('Error ', err);
-    });
-
-    const endpoints = ['bugs', 'fish', 'sea', 'art', 'fossils'];
+    const endpoints = ['villagers', 'bugs', 'fish', 'sea', 'art', 'fossils'];
     endpoints.forEach(function(point) {
         const $data = $.ajax(`https://acnhapi.com/v1a/${point}/`)
         .then(function(data) {
-            searchResults(data, query);
+            showSearchResults(data, query);
+            
         }, function(err) {
             console.log('Error ', err);
         });
@@ -183,7 +170,7 @@ function handleSubmit(evt) {
 };
 
 // finds object in api data and calls function to render on page
-function searchResults(data, query) {
+function showSearchResults(data, query) {
     let index = data.findIndex(function(element) {
         return element.name['name-USen'] === query; 
     });
@@ -193,6 +180,15 @@ function searchResults(data, query) {
         let type = image.split('/')[5];
         renderElement(data[index], type);
         autoShowDetails();
+    } else {
+        index = data.findIndex(function(element) {
+            return element.name['name-USen'] === capitalize(query); 
+        });
+
+        if (index !== -1) {
+            render(data[index]);
+            autoShowDetails();
+        }
     };
 };
 
