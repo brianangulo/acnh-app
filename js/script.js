@@ -115,13 +115,25 @@ function toggleDetails(evt) {
     };
     
     if ($expandedInfo.hasClass('hidden')) {
+        if ($('main').find('.shown').length) {
+            let prevVisible = $('.shown');
+            $(prevVisible).fadeOut();
+            setTimeout(function() {
+                $(prevVisible).siblings('.title').css('border-bottom', '1px solid #6dbdb6');
+                $(prevVisible).siblings('.title').css('margin-bottom', '8px');
+            }, 400);
+            $(prevVisible).addClass('hidden');
+            $(prevVisible).removeClass('shown');
+        }
         $title.css('border-bottom', 'hidden');
         $title.css('margin-bottom', '0');
         $expandedInfo.fadeIn();
+        $expandedInfo.addClass('shown');
         $expandedInfo.removeClass('hidden');
     } else {
         $expandedInfo.fadeOut();
         $expandedInfo.addClass('hidden');
+        $expandedInfo.removeClass('shown');
         setTimeout(function() {
             $title.css('border-bottom', '1px solid #6dbdb6');
             $title.css('margin-bottom', '8px');
@@ -301,7 +313,6 @@ function showVillOptions(evt) {
 // displays all critters and collectibles on the page
 function showOtherOptions(evt) {
     let type = $(evt.target).attr('id').split('-link')[0];
-    console.log(type);
 
     if (type === 'bug' || type === 'fossil') {
         type = type + 's';
