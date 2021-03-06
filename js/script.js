@@ -14,6 +14,7 @@ const $fishLink = $('#fish-link');
 const $seaLink = $('#sea-link');
 const $artLink = $('#art-link');
 const $fossilLink = $('#fossil-link');
+const $songLink = $('#songs-link');
 
 
 
@@ -32,6 +33,7 @@ $fishLink.on('click', showOtherOptions);
 $seaLink.on('click', showOtherOptions);
 $artLink.on('click', showOtherOptions);
 $fossilLink.on('click', showOtherOptions);
+$songLink.on('click', showOtherOptions);
 
 
 // functions
@@ -266,7 +268,12 @@ function showOtherOptions(evt) {
     if (type === 'bug' || type === 'fossil') {
         type = type + 's';
     }
-    prepPage(`All ${capitalize(type)}`);
+
+    if (type === 'songs') {
+        prepPage(`All K.K. Slider ${capitalize(type)}`);
+    } else {
+        prepPage(`All ${capitalize(type)}`);
+    }
     
     const $request = $.ajax(`https://acnhapi.com/v1a/${type}`)
     .then(function(data) {
@@ -336,11 +343,19 @@ function renderElement(data, type) {
         }
         newElem += `<p class="detail-label">Price: </p>
         <p class="detail" id="price">${data.price} bells</p>`;
-    } else if (type === 'art' || type === 'fossils') {
+    } else if (type === 'art' || type === 'fossils' || type === 'songs') {
         newElem += `<p class="name no-icon">${name}</p>
-        </div>
-        <div class="expanded-info">
-        <div class="details">`;
+        </div>`;
+        if (type === 'art' || type === 'fossils') {
+            newElem += `<div class="expanded-info">
+            <div class="details">`;
+        } else if (type === 'songs') {
+            newElem += `<div class="expanded-info music">
+            <div class="audio-player">
+            <audio controls>
+            <source src="${data['music_uri']}" type="audio/mpeg">
+            </audio>`;
+        }
         if (type === 'art') {
             newElem += `<p class="detail-label">Buy Price: </p>
             <p class="detail" id="buy-price">${data['buy-price']} bells</p>

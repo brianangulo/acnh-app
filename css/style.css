@@ -157,8 +157,19 @@ main {
     border-top: none;
     margin: 8px;
     margin-top: 0;
-    /* background-color: rgba(107, 190, 182, 0.1); */
+    background-color: rgba(219, 238, 231, 1);
+    position: absolute;
+    width: 300px;
+}
 
+.music {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    border: 1px solid #6dbdb6;
+    border-top: none;
+    margin: 8px;
+    margin-top: 0;
     background-color: rgba(219, 238, 231, 1);
     position: absolute;
     width: 300px;
@@ -178,6 +189,15 @@ main {
 
 .detail {
     margin: 0 0 8px 15px;
+}
+
+.audio-player {
+    margin: 10px 0;
+    order: 2;
+}
+
+audio {
+    width: 280px;;
 }
 
 .img-section {
