@@ -1,19 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@700&family=Sarabun:wght@200&display=swap');
 
+:root {
+    --acnh-blue: #6dbdb6;
+    --acnh-neutral: rgba(222, 239, 227, 1);
+    --acnh-neutral-tint: rgba(219, 238, 231, 1);
+    --nav-color: rgba(222, 239, 227, 0.5);
+    --title-color: rgba(107, 190, 182, 0.1);
+}
+
 * {
 	box-sizing: border-box;
 }
 
-html {
+html, body {
     height: 100%;
 }
 	
 body {
     background-image: url("../img/pattern-leaves-white.jpg");
     background-repeat: repeat;
-    background-color: #e4f2e8;
+    background-color: var(--acnh-neutral);
     font-family: 'Sarabun', Helvetica, sans-serif;
-    height: 100%;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -34,7 +41,7 @@ header {
     width: 100%;
     padding-bottom: 15px;
     background-image: url("../img/pattern-leaves-turquoise.jpg");
-    background-color: #6dbdb6;
+    background-color: var(--acnh-blue);
 }
 
 #logo {
@@ -48,7 +55,7 @@ header {
     align-items: center;
     justify-content: flex-end;
     width: 60%;
-    background-color: rgba(222, 239, 227, 0.5);
+    background-color: var(--nav-color);
     padding: 10px;
 }
 
@@ -63,7 +70,7 @@ header {
     display: none;
     margin-top: 13px;
     position: absolute;
-    background-color: rgba(222, 239, 227, 0.5);
+    background-color: var(--nav-color);
     overflow: hidden;
 }
 
@@ -72,7 +79,7 @@ header {
 }
 
 .navbar a:hover, .subnav:hover .subnavbtn, .subnav-content a:hover {
-    background-color: rgba(222, 239, 227, 1);
+    background-color: var(--acnh-neutral);
   }
 
 .nav-link {
@@ -104,7 +111,7 @@ form {
 h1, h2 {
     margin-top: 140px;
     font-family: 'Barlow', Helvetica, sans-serif;
-    color: #6dbdb6;
+    color: var(--acnh-blue);
 }
 
 #poster {
@@ -131,9 +138,9 @@ main {
     width: 300px;
     display: flex;
     align-items: center;
-    border: 1px solid #6dbdb6;
+    border: 1px solid var(--acnh-blue);
     margin: 8px;
-    background-color: rgba(107, 190, 182, 0.1);
+    background-color: var(--title-color);
 }
 
 .no-icon {
@@ -150,30 +157,25 @@ main {
     display: inline;
 }
 
-.expanded-info {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
+.expanded-info, .music {
     align-items: center;
-    border: 1px solid #6dbdb6;
+    border: 1px solid var(--acnh-blue);
     border-top: none;
     margin: 8px;
     margin-top: 0;
-    background-color: rgba(219, 238, 231, 1);
+    background-color: var(--acnh-neutral-tint);
     position: absolute;
     width: 300px;
+}
+
+.expanded-info {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
 }
 
 .music {
     display: flex;
     flex-flow: column;
-    align-items: center;
-    border: 1px solid #6dbdb6;
-    border-top: none;
-    margin: 8px;
-    margin-top: 0;
-    background-color: rgba(219, 238, 231, 1);
-    position: absolute;
-    width: 300px;
 }
 
 .details {
@@ -215,8 +217,8 @@ audio {
     width: 150px;
     padding: 16px 10px;
     margin: 5px;
-    border: 1px solid #6dbdb6;
-    background-color: rgba(107, 190, 182, 0.1);
+    border: 1px solid var(--acnh-blue);
+    background-color: var(--title-color);
 }
 
 footer {
@@ -225,7 +227,7 @@ footer {
     padding: 10px;
     margin-top: 50px;
     background-image: url("../img/pattern-leaves-turquoise.jpg");
-    background-color: #6dbdb6;
+    background-color: var(--acnh-blue);
 }
 
 /* media queries */
@@ -265,7 +267,7 @@ footer {
     }
     
     .navbar {
-        background-color: rgba(222, 239, 227, 0.5);
+        background-color: var(--nav-color);
         padding: 10px 0;
         overflow: hidden;
     }
