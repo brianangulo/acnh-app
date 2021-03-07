@@ -1,4 +1,5 @@
 // global variables
+let $apiData = {};
 let availableMonths;
 let availableTime;
 
@@ -37,6 +38,21 @@ $songLink.on('click', showOtherOptions);
 
 
 // functions
+// call the api on page load and store information in a globally accessible variable
+function init() {
+    const endpoints = ['villagers', 'bugs', 'fish', 'sea', 'art', 'fossils', 'songs'];
+    endpoints.forEach(function(point) {
+        const $data = $.ajax(`https://acnhapi.com/v1a/${point}/`)
+        .then(function(data) {
+            $apiData[point] = data;
+        }, function(err) {
+            console.log('Error ', err);
+        });
+    });
+};
+
+init();
+
 // capitalize first letter of each word in a string
 function capitalize(name) {
     let capitalName;
@@ -45,6 +61,10 @@ function capitalize(name) {
         let capitalWords = [];
         words.forEach(function(word) {
             capitalWords.push(word.charAt(0).toUpperCase() + word.slice(1));
+            if (capitalWords.includes('K.k.')) {
+                let index = capitalWords.indexOf('K.k.');
+                capitalWords[index] = 'K.K.';
+            }
         });
         capitalName = capitalWords.join(' ');
     } else {
@@ -153,59 +173,54 @@ function handleSubmit(evt) {
 
     prepPage(`Search Results for "${userInput}"`);
     
-    const endpoints = ['villagers', 'bugs', 'fish', 'sea', 'art', 'fossils'];
-    endpoints.forEach(function(point) {
-        const $data = $.ajax(`https://acnhapi.com/v1a/${point}/`)
-        .then(function(data) {
-            showSearchResults(data, query);
-            
-        }, function(err) {
-            console.log('Error ', err);
-        });
-    });
+    showSearchResults(query);
 
-    setTimeout(function() {
-        if (!$('main').find('div').length) {
-            $('main').html(`<p>Sorry, no results for "${userInput}." Check spelling and try again or browse through the navigation above.</p>`);
-        };
-    }, 500);
+    if (!$('main').find('div').length) {
+        $('main').html(`<p>Sorry, no results for "${userInput}." Check spelling and try again or browse through the navigation above.</p>`);
+    };
 };
 
 // finds object in api data and calls function to render on page
-function showSearchResults(data, query) {
-    let index = data.findIndex(function(element) {
-        return element.name['name-USen'] === query; 
-    });
+function showSearchResults(query) {
+    let keys = Object.keys($apiData);
+    let index;
+    keys.forEach(function(key) {
+        if (key === 'villagers') {
+            index = $apiData[key].findIndex(function(element) {
+                return element.name['name-USen'] === capitalize(query); 
+            });
+        
+            if (index !== -1) {
+                render($apiData[key][index]);
+                autoShowDetails();
+            }
+        } else if (key === 'songs') {
+            index = $apiData[key].findIndex(function(element) {
+                return element.name['name-USen'] === capitalize(query); 
+            });
 
-    if (index !== -1) {
-        let image = data[index]['image_uri']
-        let type = image.split('/')[5];
-        renderElement(data[index], type);
-        autoShowDetails();
-    } else {
-        index = data.findIndex(function(element) {
-            return element.name['name-USen'] === capitalize(query); 
-        });
-
-        if (index !== -1) {
-            render(data[index]);
-            autoShowDetails();
+        } else {
+            index = $apiData[key].findIndex(function(element) {
+                return element.name['name-USen'] === query; 
+            });
         }
-    };
+        
+        if (index !== -1) {
+            let image = $apiData[key][index]['image_uri']
+            let type = image.split('/')[5];
+            renderElement($apiData[key][index], type);
+            autoShowDetails();
+        };
+    });
 };
 
 // lists all villagers on the page
 function allVillagers() {
     prepPage('All Villagers');
-    
-    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
-    .then(function(data) {
-        sortAlphabetically(data);
-        data.forEach(function(vill) {
-            render(vill);
-        })
-    }, function(err) {
-        console.log('Error ', err);
+
+    sortAlphabetically($apiData.villagers);
+    $apiData.villagers.forEach(function(vill) {
+        render(vill);
     });
 };
 
@@ -215,21 +230,16 @@ function handleOptionClick(evt) {
 
     prepPage(`Browse by ${capitalize(type)}`);
 
-    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
-    .then(function(data) {
-        let optionArray = [];
-        data.forEach(function(vill) {
-            if (!optionArray.includes(vill[type])) {
-                optionArray.push(vill[type]);
-            }
-        });
-        
-        sortAlphabetically(optionArray);
-        optionArray.forEach(function(animal) {
-            renderOption(animal, type);
-        })
-    }, function(err) {
-        console.log('Error ', err);
+    let optionArray = [];
+    $apiData.villagers.forEach(function(vill) {
+        if (!optionArray.includes(vill[type])) {
+            optionArray.push(vill[type]);
+        }
+    });
+    
+    sortAlphabetically(optionArray);
+    optionArray.forEach(function(animal) {
+        renderOption(animal, type);
     });
 };
 
@@ -247,17 +257,12 @@ function showVillOptions(evt) {
     let $target = capitalize($(evt.target).attr('id'));
     prepPage(`All ${$target} Villagers`);
 
-    const $villagers = $.ajax('https://acnhapi.com/v1a/villagers/')
-    .then(function(data) {
-        let targetType = $(evt.target).parent().attr('class');
-        let targetArray = [];
-        targetArray = data.filter(vill => vill[targetType] === $target);
-        sortAlphabetically(targetArray);
-        targetArray.forEach(function(vill) {
-            render(vill);
-        });
-    }, function(err) {
-        console.log('Error ', err);
+    let targetType = $(evt.target).parent().attr('class');
+    let targetArray = [];
+    targetArray = $apiData.villagers.filter(vill => vill[targetType] === $target);
+    sortAlphabetically(targetArray);
+    targetArray.forEach(function(vill) {
+        render(vill);
     });
 };
 
@@ -271,19 +276,15 @@ function showOtherOptions(evt) {
 
     if (type === 'songs') {
         prepPage(`All K.K. Slider ${capitalize(type)}`);
+    } else if (type === 'sea') {
+        prepPage(`All ${capitalize(type)} Creatures`);
     } else {
         prepPage(`All ${capitalize(type)}`);
     }
     
-    const $request = $.ajax(`https://acnhapi.com/v1a/${type}`)
-    .then(function(data) {
-        sortAlphabetically(data);
-
-        data.forEach(function(element) {
-            renderElement(element, type);
-        })
-    }, function(err) {
-        console.log('Error', err);
+    sortAlphabetically($apiData[type]);
+    $apiData[type].forEach(function(element) {
+        renderElement(element, type);
     });
 };
 
