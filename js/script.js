@@ -194,11 +194,11 @@ function showSearchResults(query) {
                 render($apiData[key][index]);
                 autoShowDetails();
             }
+            return;
         } else if (key === 'songs') {
             index = $apiData[key].findIndex(function(element) {
                 return element.name['name-USen'] === capitalize(query); 
             });
-
         } else {
             index = $apiData[key].findIndex(function(element) {
                 return element.name['name-USen'] === query; 
