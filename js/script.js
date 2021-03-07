@@ -73,6 +73,35 @@ function capitalize(name) {
     return capitalName;
 };
 
+// sort array alphabetically
+function sortAlphabetically(array) {
+    array.sort(function(a, b) {
+        if (typeof(a) === 'object') {
+            a = a.name['name-USen'].toUpperCase();
+            b = b.name['name-USen'].toUpperCase();
+        }
+        
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+    return array;
+};
+
+// clear main page and set the h2 to prepare the page
+function prepPage(h2Text) {
+    if ($('body').find('h2').length) {
+        $('h2').text(`${h2Text}`);
+    } else {
+        $(`<h2>${h2Text}</h2>`).insertBefore('main');
+    };
+    $('main').html('');
+};
+
 // renders villager to the page
 function render(villagerData) {
     let $newVillager = $(`<div class="villager">
@@ -104,22 +133,83 @@ function render(villagerData) {
     $('main').find('.expanded-info').addClass('hidden');
 };
 
-// expand details automatically, to be used when searching
-function autoShowDetails() {
-    $('.title').css('border-bottom', 'hidden');
-    $('.title').css('margin-bottom', '0');
-    $('.expanded-info').show();
-    $('.expanded-info').removeClass('hidden');
+// creates html element for each characteristic to browse by
+function renderOption(input, className) {
+    let $newOption = $(`<div class="${className}">
+    <p class="sort-label-name" id="${input.toLowerCase()}">${input}</p>
+    </div>`);
+
+    $('main').append($newOption);
 };
 
-// clear main page and set the h2 to prepare the page
-function prepPage(h2Text) {
-    if ($('body').find('h2').length) {
-        $('h2').text(`${h2Text}`);
-    } else {
-        $(`<h2>${h2Text}</h2>`).insertBefore('main');
-    };
-    $('main').html('');
+// render critters and collectibles on the page
+function renderElement(data, type) {
+    let name = capitalize(data.name['name-USen']);
+    let newElem = `<div>
+    <div class='title'>`;
+    
+    if (type === 'bugs' || type === 'fish' || type === 'sea') {
+        getAvailable(data);
+        newElem += `<img class="icon" src="${data['icon_uri']}">
+        <p class="name">${name}</p>
+        </div>
+        <div class="expanded-info">
+        <div class="details">
+        <p class="detail-label">Availability: </p>
+        <p class="detail" id="availability">${availableMonths}</p>
+        <p class="detail-label">Time: </p>
+        <p class="detail" id="time">${availableTime}</p>`;
+        if (type === 'bugs' || type === 'fish') {
+            newElem += `<p class="detail-label">Location: </p>
+            <p class="detail" id="location">${data.availability.location}</p>
+            <p class="detail-label">Rarity: </p>
+            <p class="detail" id="rarity">${data.availability.rarity}</p>`;
+        } else if (type === 'sea') {
+            newElem += `<p class="detail-label">Speed: </p>
+            <p class="detail" id="speed">${data.speed}</p>
+            <p class="detail-label">Shadow: </p>
+            <p class="detail" id="shadow">${data.shadow}</p>`;
+        }
+        newElem += `<p class="detail-label">Price: </p>
+        <p class="detail" id="price">${data.price} bells</p>`;
+    } else if (type === 'art' || type === 'fossils' || type === 'songs') {
+        newElem += `<p class="name no-icon">${name}</p>
+        </div>`;
+        if (type === 'art' || type === 'fossils') {
+            newElem += `<div class="expanded-info">
+            <div class="details">`;
+        } else if (type === 'songs') {
+            newElem += `<div class="expanded-info music">
+            <div class="audio-player">
+            <audio controls>
+            <source src="${data['music_uri']}" type="audio/mpeg">
+            </audio>`;
+        }
+        if (type === 'art') {
+            newElem += `<p class="detail-label">Buy Price: </p>
+            <p class="detail" id="buy-price">${data['buy-price']} bells</p>
+            <p class="detail-label">Sell Price: </p>
+            <p class="detail" id="sell-price">${data['sell-price']} bells</p>
+            <p class="detail-label">Description: </p>
+            <p class="detail" id="description">${data['museum-desc']}</p>`;
+        } else if (type === 'fossils') {
+            newElem += `<p class="detail-label">Price: </p>
+            <p class="detail" id="price">${data.price} bells</p>
+            <p class="detail-label">Description: </p>
+            <p class="detail" id="description">${data['museum-phrase']}</p>`;
+        }
+    }
+    newElem += `</div>
+    <div class="img-section">
+    <img class="image" src="${data['image_uri']}">
+    </div>
+    </div>
+    </div>`;
+
+    let $newElement = $(newElem);
+    $('main').append($newElement);
+    $('main').find('.expanded-info').css('display', 'none');
+    $('main').find('.expanded-info').addClass('hidden');
 };
 
 // toggle the detail section show/hide, to be used when clicking the title
@@ -161,6 +251,14 @@ function toggleDetails(evt) {
             $title.css('margin-bottom', '8px');
         }, 400);
     };
+};
+
+// expand details automatically, to be used when searching
+function autoShowDetails() {
+    $('.title').css('border-bottom', 'hidden');
+    $('.title').css('margin-bottom', '0');
+    $('.expanded-info').show();
+    $('.expanded-info').removeClass('hidden');
 };
 
 // function to search from all things shown in app
@@ -243,15 +341,6 @@ function handleOptionClick(evt) {
     });
 };
 
-// creates html element for each characteristic to browse by
-function renderOption(input, className) {
-    let $newOption = $(`<div class="${className}">
-    <p class="sort-label-name" id="${input.toLowerCase()}">${input}</p>
-    </div>`);
-
-    $('main').append($newOption);
-};
-
 // displays all matching villagers based on characteristic
 function showVillOptions(evt) {
     let $target = capitalize($(evt.target).attr('id'));
@@ -312,93 +401,4 @@ function getAvailable(data) {
     if (!availableTime) {
         availableTime = 'All Day';
     };
-};
-
-// render critters and collectibles on the page
-function renderElement(data, type) {
-    let name = capitalize(data.name['name-USen']);
-    let newElem = `<div>
-    <div class='title'>`;
-    
-    if (type === 'bugs' || type === 'fish' || type === 'sea') {
-        getAvailable(data);
-        newElem += `<img class="icon" src="${data['icon_uri']}">
-        <p class="name">${name}</p>
-        </div>
-        <div class="expanded-info">
-        <div class="details">
-        <p class="detail-label">Availability: </p>
-        <p class="detail" id="availability">${availableMonths}</p>
-        <p class="detail-label">Time: </p>
-        <p class="detail" id="time">${availableTime}</p>`;
-        if (type === 'bugs' || type === 'fish') {
-            newElem += `<p class="detail-label">Location: </p>
-            <p class="detail" id="location">${data.availability.location}</p>
-            <p class="detail-label">Rarity: </p>
-            <p class="detail" id="rarity">${data.availability.rarity}</p>`;
-        } else if (type === 'sea') {
-            newElem += `<p class="detail-label">Speed: </p>
-            <p class="detail" id="speed">${data.speed}</p>
-            <p class="detail-label">Shadow: </p>
-            <p class="detail" id="shadow">${data.shadow}</p>`;
-        }
-        newElem += `<p class="detail-label">Price: </p>
-        <p class="detail" id="price">${data.price} bells</p>`;
-    } else if (type === 'art' || type === 'fossils' || type === 'songs') {
-        newElem += `<p class="name no-icon">${name}</p>
-        </div>`;
-        if (type === 'art' || type === 'fossils') {
-            newElem += `<div class="expanded-info">
-            <div class="details">`;
-        } else if (type === 'songs') {
-            newElem += `<div class="expanded-info music">
-            <div class="audio-player">
-            <audio controls>
-            <source src="${data['music_uri']}" type="audio/mpeg">
-            </audio>`;
-        }
-        if (type === 'art') {
-            newElem += `<p class="detail-label">Buy Price: </p>
-            <p class="detail" id="buy-price">${data['buy-price']} bells</p>
-            <p class="detail-label">Sell Price: </p>
-            <p class="detail" id="sell-price">${data['sell-price']} bells</p>
-            <p class="detail-label">Description: </p>
-            <p class="detail" id="description">${data['museum-desc']}</p>`;
-        } else if (type === 'fossils') {
-            newElem += `<p class="detail-label">Price: </p>
-            <p class="detail" id="price">${data.price} bells</p>
-            <p class="detail-label">Description: </p>
-            <p class="detail" id="description">${data['museum-phrase']}</p>`;
-        }
-    }
-    newElem += `</div>
-    <div class="img-section">
-    <img class="image" src="${data['image_uri']}">
-    </div>
-    </div>
-    </div>`;
-
-    let $newElement = $(newElem);
-    $('main').append($newElement);
-    $('main').find('.expanded-info').css('display', 'none');
-    $('main').find('.expanded-info').addClass('hidden');
-};
-
-// sort array alphabetically
-function sortAlphabetically(array) {
-    array.sort(function(a, b) {
-        if (typeof(a) === 'object') {
-            a = a.name['name-USen'].toUpperCase();
-            b = b.name['name-USen'].toUpperCase();
-        }
-        
-        if (a < b) {
-            return -1;
-        } else if (a > b) {
-            return 1;
-        } else {
-            return 0;
-        }
-    });
-    return array;
 };
