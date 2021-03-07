@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@700&family=Sarabun:wght@200&display=swap');
+
 * {
 	box-sizing: border-box;
 }
@@ -10,7 +12,7 @@ body {
     background-image: url("../img/pattern-leaves-white.jpg");
     background-repeat: repeat;
     background-color: #e4f2e8;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Sarabun', Helvetica, sans-serif;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -99,8 +101,9 @@ form {
 }
 
 /* home page */
-h1 {
+h1, h2 {
     margin-top: 140px;
+    font-family: 'Barlow', Helvetica, sans-serif;
     color: #6dbdb6;
 }
 
@@ -111,9 +114,7 @@ h1 {
 
 /* pages */
 h2 {
-    margin-top: 140px;
     margin-left: 40px;
-    color: #6dbdb6;
 }
 
 main {
@@ -181,6 +182,7 @@ main {
 }
 
 .detail-label {
+    font-family: Helvetica, sans-serif;
     text-transform: uppercase;
     font-size: 10px;
     font-weight: bold;
@@ -220,7 +222,7 @@ audio {
 footer {
     text-align: center;
     font-style: italic;
-    padding: 20px;
+    padding: 10px;
     margin-top: 50px;
     background-image: url("../img/pattern-leaves-turquoise.jpg");
     background-color: #6dbdb6;
