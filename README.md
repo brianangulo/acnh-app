@@ -25,6 +25,5 @@ A web application to display information about Animal Crossing: New Horizons vil
 ![Wireframe showing desktop layout](./villagers-desktop-wireframe.png)
 
 ## Future Goals
-* Use `localstorage` to allow the user to save favorite villagers and items
-* Add a section for NPC characters
-* Add CSS animation for long page loads
+* Allow users to select Northern or Southern Hemisphere
+* Create a more dynamic nav layout for mobile users
