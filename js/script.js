@@ -402,3 +402,5 @@ function getAvailable(data) {
         availableTime = 'All Day';
     };
 };
+
+//My notes: I want to add/fix 2 main things. 1st make it more mobile responsive and 2nd add a Player villagers option maybe either via fb or browser caching
