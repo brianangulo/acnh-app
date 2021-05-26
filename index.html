@@ -1,23 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AC:NH Guide</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"
+    ></script>
     <script defer src="./js/script.js"></script>
-</head>
-<body>
-    <div id='body-container'>
-        <header>
-            <img id="logo" src="./img/acnh-logo.png" alt="Animal Crossing: New Horizons">
-            <div class='heading-section'>
+  </head>
+  <body>
+    <div id="body-container">
+      <header>
+        <img
+          id="logo"
+          src="./img/acnh-logo.png"
+          alt="Animal Crossing: New Horizons"
+        />
+        <div class="heading-section">
+          <nav class="navbar">
+            <a href="#" class="nav-logo">Home</a>
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="#" class="nav-link">Villagers</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">Critters</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">Collectibles</a>
+              </li>
+            </ul>
+            <div class="hamburger">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+          </nav>
 
-                <div class="navbar">
+          <form>
+            <input type="text" id="search-input" placeholder="search..." />
+            <button id="search-button"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </header>
+
+      <main>
+        <h1>Animal Crossing: New Horizons</h1>
+        <img id="poster" src="./img/acnh-poster.jpg" />
+      </main>
+    </div>
+    <footer>All assets property of Nintendo</footer>
+  </body>
+</html>
+
+<!-- 
+
+    
+ <div class="navbar responsive">
                     <div class="subnav">
                         <a class="nav-link" href="./index.html">Home</a>
                     </div>
@@ -49,21 +99,11 @@
                             <a href="#" class="nav-link" id='songs-link'>Songs</a>
                         </div>
                     </div>
+                    <div class="subnav">
+                        <a href="#" class="nav-link bar"><i class="fa fa-bars"></i></a>
+                    </div>
                 </div>
 
-                <form>
-                    <input type="text" id="search-input" placeholder="search...">
-                    <button id='search-button'><i class="fas fa-search"></i></button>
-                </form>
 
-            </div>
-        </header>
-    
-        <main>
-            <h1>Animal Crossing: New Horizons</h1>
-            <img id="poster" src="./img/acnh-poster.jpg">
-        </main>
-    </div>
-    <footer>All assets property of Nintendo</footer>
-</body>
-</html>
+
+ -->

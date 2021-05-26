@@ -404,3 +404,22 @@ function getAvailable(data) {
 };
 
 //My notes: I want to add/fix 2 main things. 1st make it more mobile responsive and 2nd add a Player villagers option maybe either via fb or browser caching
+
+//Test -- 
+
+const hamburger = document.querySelector(".hamburger");
+const navMenu = document.querySelector(".nav-menu");
+const navLink = document.querySelectorAll(".nav-link");
+
+hamburger.addEventListener("click", mobileMenu);
+navLink.forEach((n) => n.addEventListener("click", closeMenu));
+
+function mobileMenu() {
+  hamburger.classList.toggle("active");
+  navMenu.classList.toggle("active");
+}
+
+function closeMenu() {
+  hamburger.classList.remove("active");
+  navMenu.classList.remove("active");
+}
